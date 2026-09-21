@@ -44,16 +44,18 @@ claude plugin marketplace add thulmservice/shopify-peak-season-toolkit
 claude plugin install shopify-peak-season-toolkit
 ```
 
-### Codex / ChatGPT / other Agent Plugins 1.0.0 clients
+### Codex
 
-Packaged to the published spec (root `plugin.json`, `.agents/plugins/marketplace.json`, `skills/` at the plugin root) but **not yet verified against a real Codex or ChatGPT install** — this machine has no Codex CLI to test with. If you try it and it doesn't pick up, open an issue with what the client did instead.
+Verified: install via marketplace runs end to end with the Codex CLI and lands the correct files, skills included. Whether Codex actually *invokes* a skill on a natural request hasn't been checked yet — that needs a logged-in Codex session, which this install test didn't have.
 
 ```bash
-codex plugin marketplace add https://github.com/thulmservice/shopify-peak-season-toolkit
-codex plugin install shopify-peak-season-toolkit
+codex plugin marketplace add thulmservice/shopify-peak-season-toolkit
+codex plugin add shopify-peak-season-toolkit@shopify-peak-season
 ```
 
-(Command names above are the documented pattern; confirm against your client's actual CLI, which may differ.)
+### ChatGPT / other Agent Plugins 1.0.0 clients
+
+Packaged to the same spec Codex reads (root `plugin.json`, `.agents/plugins/marketplace.json`, `skills/` at the plugin root), but not separately verified against ChatGPT. If it behaves differently there, open an issue with what happened.
 
 ### Any other agent that reads SKILL.md directly
 

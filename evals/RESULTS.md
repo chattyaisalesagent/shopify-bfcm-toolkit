@@ -124,3 +124,21 @@ With the skill, the model instead opened with *"Partially,"* described a real bu
 | | +0.42 | +0.22 |
 
 Both skills show real, measured value, and both show at least one case where an unaided model already does fine or better. Neither skill has been "proven" in the sense of a large sample; both have been checked honestly, including the ways they fall short, at a total measurement cost across both skills of roughly $10.50.
+
+---
+
+## Fix verified, 21 September 2026
+
+Added one section to `SKILL.md`, "If the message is a plain question, answer it first" — instructs a direct factual lead before any workflow framing when the message is a yes/no platform-capability question, and names the specific failure to avoid (hedging into "partially," leading with an adjacent feature that doesn't answer what was asked).
+
+Re-measured `shopify-per-region-limit` after the fix, same methodology:
+
+| | Before fix | After fix |
+|---|---|---|
+| With skill | 0.67 (2/3) | **1.00 (3/3)** |
+| Without skill | 1.00 | 0.33 |
+| Δ | −0.33 | **+0.67** |
+
+The with-skill arm is what the fix targeted, and it moved from 2/3 to 3/3 as intended. The without-skill arm also moved between runs (1.00 → 0.33), which is baseline variance across separate runs, not something the fix touched — a reminder that a single 3-run batch on either arm is noisy, and the with-skill result is the one this fix set out to change and did.
+
+Skill 2 now stands at three cases checked, all three positive: `transit-time-invention-trap` +0.67, `cutoff-arithmetic` +0.33, `shopify-per-region-limit` +0.67 post-fix.

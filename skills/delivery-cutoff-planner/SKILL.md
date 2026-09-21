@@ -19,6 +19,10 @@ Read `references/where-transit-times-come-from.md` before asking the merchant an
 
 If a zone's transit time is not known, mark it `[DECISION NEEDED: confirm carrier transit time for <zone>]` and do not run the calculation on a guess. A wrong transit number produces a cutoff date that is wrong in the direction of promising too much time, which is the most damaging error this skill can make.
 
+## If the message is a plain question, answer it first
+
+Not every request is "compute my cutoffs." Some are a yes-or-no question about what Shopify itself can do, such as "can Shopify set a different cutoff per region natively." Answer that plainly and first, in one direct sentence, before offering to run the full workflow. `references/where-transit-times-come-from.md` has the verified facts: Shopify's manual delivery dates are a single global setting with one cutoff, and automated delivery dates are a per-order estimate, not a published per-region cutoff. State the fact, do not hedge it into "partially" and do not lead with an adjacent feature (such as per-zone shipping-rate labels) that does not actually answer what was asked. Offer to run the workflow after the direct answer, not instead of it.
+
 ## How to work
 
 1. **Gather the zones.** Ask which regions or shipping profiles the merchant wants cutoffs for. One profile for the whole country is one zone; different transit times per region need one zone each, because a single blended cutoff understates the risk for the slower zones.

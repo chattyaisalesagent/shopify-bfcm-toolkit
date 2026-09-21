@@ -22,6 +22,15 @@ Both skills carry one rule throughout: **never state a commercial rule you were 
 
 ## Install
 
+The skills themselves (`SKILL.md` plus `scripts/` and `references/`) follow the open, cross-vendor [Agent Skills](https://agentskills.io/specification) format. The repo ships two packagings on top of that, one per plugin ecosystem, so they coexist without conflict:
+
+- `.claude-plugin/` — Claude Code's own manifest and marketplace format
+- `plugin.json` at the repo root, plus `.agents/plugins/marketplace.json` — the [Agent Plugins 1.0.0](https://agent-plugins.org/specification) format used by Codex, ChatGPT and other clients built on that standard (Amazon, Cursor, Microsoft, OpenAI, Vercel back it; Anthropic does not, which is why Claude Code needs its own manifest above)
+
+### Claude Code
+
+Verified end-to-end: cloned, installed and run through `claude plugin marketplace add` / `claude plugin install` on this machine.
+
 **Try it for one session, no install:**
 
 ```bash
@@ -34,6 +43,21 @@ claude --plugin-dir /path/to/shopify-peak-season-toolkit
 claude plugin marketplace add thulmservice/shopify-peak-season-toolkit
 claude plugin install shopify-peak-season-toolkit
 ```
+
+### Codex / ChatGPT / other Agent Plugins 1.0.0 clients
+
+Packaged to the published spec (root `plugin.json`, `.agents/plugins/marketplace.json`, `skills/` at the plugin root) but **not yet verified against a real Codex or ChatGPT install** — this machine has no Codex CLI to test with. If you try it and it doesn't pick up, open an issue with what the client did instead.
+
+```bash
+codex plugin marketplace add https://github.com/thulmservice/shopify-peak-season-toolkit
+codex plugin install shopify-peak-season-toolkit
+```
+
+(Command names above are the documented pattern; confirm against your client's actual CLI, which may differ.)
+
+### Any other agent that reads SKILL.md directly
+
+Point it at `skills/campaign-rules-policy-qa/` or `skills/delivery-cutoff-planner/` — each is a self-contained, spec-compliant skill folder that doesn't depend on the plugin wrapper at all.
 
 Then just describe what you need — "check this sale terms draft before we publish it", "when's the last day to order for Christmas delivery to the EU" — and the relevant skill fires on its own.
 

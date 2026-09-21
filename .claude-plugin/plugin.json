@@ -1,0 +1,10 @@
+{
+  "name": "shopify-peak-season-toolkit",
+  "displayName": "Shopify Peak-Season Readiness Toolkit",
+  "version": "0.1.0",
+  "description": "Turns peak-season readiness decisions into publishable artifacts: sale terms and holiday policy QA, and per-region delivery cutoffs. Independent of any inbox, chatbot or helpdesk.",
+  "author": { "name": "Thu", "url": "https://github.com/thulmservice" },
+  "homepage": "https://github.com/thulmservice/shopify-peak-season-toolkit",
+  "repository": "https://github.com/thulmservice/shopify-peak-season-toolkit",
+  "license": "MIT"
+}

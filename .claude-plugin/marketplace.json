@@ -1,0 +1,12 @@
+{
+  "name": "shopify-peak-season",
+  "owner": { "name": "Thu" },
+  "description": "Peak-season readiness skills for Shopify merchants: sale terms QA and delivery cutoff planning.",
+  "plugins": [
+    {
+      "name": "shopify-peak-season-toolkit",
+      "source": "./",
+      "description": "Sale terms and holiday policy QA, and per-region delivery cutoff planning, for Shopify peak season. No account, export or integration required."
+    }
+  ]
+}

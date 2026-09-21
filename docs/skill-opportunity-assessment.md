@@ -313,3 +313,23 @@ A peak-season toolkit whose scope stops at discounts and policy covers the loude
 | Not proposed, recommended | New | **Skill 2**, delivery cutoffs and the three delivery templates |
 
 Two skills, which is the same count and nearly the same total scope as the original recommendation, arrived at from the opposite direction. The naming and the QA framing are improvements and are adopted.
+
+---
+
+## 11. Correction, 21 September 2026: a real merchant-facing Shopify-ChatGPT connector exists
+
+The capability sweep behind sections 1–10 missed this. Found by chasing a concrete user report of the Plugins tab in ChatGPT, not by re-running the original research.
+
+**What it is.** The official "Shopify plugin for ChatGPT" (help.shopify.com/en/manual/ai-powered-tools/connecting-ai-tools/shopify-plugin-for-chatgpt). OAuth-connected: a merchant signs in and approves data access, then works with products, collections, inventory, orders, customers, discounts and analytics from inside a ChatGPT conversation. It is not on the Shopify App Store; it installs from a link inside ChatGPT itself. This is a different thing from Shopify Agentic Storefronts (shopper-facing product discovery and checkout), which is what the earlier research found and is all it found.
+
+**The action relevant to Skill 1: `create-discount`.** Percentage-off only, scoped to the whole store, a product or a collection, with a minimum purchase requirement, a start date and usage rules. Two hard limits stated in Shopify's own docs: it cannot edit a code that already exists, and it cannot create a fixed-amount discount.
+
+**What this changes.** The "Existing solution" cell for the discount-rules row in `ebook-to-product-mapping.md` now names this connector. Code *creation* is no longer something only a human clicking through the admin can do; it can be done conversationally.
+
+**What this does not change.** The gap Skill 1 fills was never code creation. It was the shopper-facing explanation: does this code stack, is a reduced item eligible, which price the free-shipping threshold measures, what a shopper is told when the code fails. `create-discount` does not produce any of that text, and nothing in the plugin's action list audits an existing terms page for the kind of contradiction `audit-planted-defects` tests for. The connector configures; it does not explain or check.
+
+**A finding that strengthens Skill 1's returns-policy half.** The plugin's own documented limits state plainly: *"A connected AI tool can't issue refunds, cancel or capture orders, mark orders as paid, process returns, or create and adjust gift cards. These actions are blocked even when you approve write access."* Even the vendor's own most-capable connector refuses returns work by design. That is independent confirmation of something this assessment already concluded from Shopify's self-serve returns documentation: returns needs a human, or needs the kind of policy-writing help this skill gives, not a connector.
+
+**Skill 2 is untouched.** The connector's action list has no shipping, delivery, or cutoff-date action of any kind.
+
+**Process note.** This was found through a user showing me their own ChatGPT screen and a follow-up web search, not through the original multi-agent capability sweep. The sweep searched Shopify's manual, Sidekick's docs, and mainstream helpdesks; it did not search "Shopify plugin for ChatGPT" as its own term, which is why the connector installs from inside ChatGPT rather than from Shopify's own app listings, and would not surface from a Shopify-side search alone.

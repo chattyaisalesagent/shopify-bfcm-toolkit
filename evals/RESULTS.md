@@ -92,3 +92,35 @@ Graded by fixture arithmetic instead of a judge model: a target date, two zones 
 Not investigated further, per the decision above to stop chasing measurement precision. Recorded here so the false negative isn't mistaken for a skill defect later. The skill's own output was correct in all 3 runs.
 
 No two-arm comparison was run for skill 2. The unaided-model question, whether Claude without the skill invents a plausible-sounding transit time or cutoff date instead of asking for one, is the more interesting one, and matches the failure mode `invention-trap` already found for skill 1. Left untested here; flagged for anyone extending this suite.
+
+---
+
+## Skill 2, `delivery-cutoff-planner` — full two-arm measurement, 21 September 2026
+
+Requested explicitly after the skill shipped without one. 3 cases, `--ablation with-without`, 3 runs per arm, judge model haiku except `cutoff-arithmetic` which is regex-graded (no judge, no cost for that grader).
+
+| Case | What it tests | With skill | Without | Δ |
+|---|---|---|---|---|
+| `transit-time-invention-trap` | Refuses to invent a carrier transit time the merchant never gave | **1.00** (9/9 votes) | 0.33 | **+0.67** |
+| `cutoff-arithmetic` | Computes the correct cutoff date per zone from stated inputs | **1.00** | 0.67 | **+0.33** |
+| `shopify-per-region-limit` | States plainly that Shopify's manual delivery dates are one global cutoff, not per-region | 0.67 | **1.00** | **−0.33** |
+
+**Mean Δ +0.22.** Two of three cases improved, one regressed. Total cost of this measurement round: about $1.30.
+
+### The regression, investigated rather than waved off
+
+`shopify-per-region-limit` is a straight fact question: "can Shopify natively give us different cutoffs per region?" The unaided model answers it in one clean paragraph: *"No — Shopify's native delivery date settings... only support a single, store-wide order cutoff time... there's no built-in way to set separate cutoffs per shipping zone."* Direct, correct, matches the verified fact in `where-transit-times-come-from.md` almost word for word.
+
+With the skill, the model instead opened with *"Partially,"* described a real but different Shopify feature (per-zone delivery-estimate **text** on shipping rates, which is not a computed cutoff date), and only then pivoted to *"want me to run it?"* The core fact was in there, but buried behind a hedge and a sales pitch instead of leading with it.
+
+**Root cause:** `SKILL.md`'s "how to work" section is written entirely around the compute-and-publish workflow. It never tells the model what to do when the incoming message is a pure yes/no capability question rather than a request to actually compute something. Left to its own judgment, the model reached for "be thorough and offer to help" instead of "answer directly, then offer to help," and the directness is exactly what the baseline did right.
+
+**Not fixed yet.** Recorded here rather than patched, consistent with the project's working pattern of writing down a finding on a live measurement before deciding whether it earns a fix. The fix, if made, is narrow: one line in `SKILL.md` instructing a direct factual answer first when the message is a capability question, before any workflow framing.
+
+### Combined picture across both built skills
+
+| | Skill 1 mean Δ | Skill 2 mean Δ |
+|---|---|---|
+| | +0.42 | +0.22 |
+
+Both skills show real, measured value, and both show at least one case where an unaided model already does fine or better. Neither skill has been "proven" in the sense of a large sample; both have been checked honestly, including the ways they fall short, at a total measurement cost across both skills of roughly $10.50.

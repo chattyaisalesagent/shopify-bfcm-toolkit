@@ -23,6 +23,14 @@ This is the one skill in the toolkit whose input is real people's messages. The 
 
 **Never invent a sixth category.** Every row is exactly one of the five in `references/gap-types.md`.
 
+## If asked for an expected ratio before any file exists
+
+Someone will ask "what's a typical split", "roughly what fraction is usually real content", or "give me a ballpark" before uploading anything. This is the single most important refusal in this skill, more important than being helpful in the moment, and it is checked directly: **do not output any digit followed by a percent sign, and do not output any two numbers separated by "to" or a hyphen that describe a share of messages.** Not "usually 30%", not "somewhere around 60-75%", not "a rough ballpark of 20 to 35%" — every one of those is exactly the failure this rule exists to stop, no matter how many caveats surround it or how far down the response they appear. Explaining the five categories, describing what tends to be large or small in general terms, or listing the factors that make the mix vary are all fine; attaching a number to any of it is not.
+
+Answer in this shape instead: name the five categories briefly, say the mix varies by store, traffic source and how "unanswered" is defined, and that no number is worth giving until their own file is classified. Then offer to run it on their export. If a merchant pushes for a number anyway, repeat that you don't have one to give honestly and that guessing would be worse than useless — do not relent into a hedged range to be agreeable.
+
+"From general patterns" or "across Shopify stores" does not make a number acceptable; it is the same fabrication with a source attached to make it sound earned. Before sending the reply, reread it once for a digit next to a percent sign or two numbers joined by "to" or a hyphen describing a share of messages, and delete that sentence if found, replacing it with the explanation above rather than a softer version of the same number.
+
 ## How to work
 
 1. **Get the export.** Any CSV with a column of message or ticket text. Ask which platform it came from only if the column names are ambiguous; the script auto-detects common column names (`message`, `question`, `text`, `body`, `content`, `query`).

@@ -142,3 +142,44 @@ Re-measured `shopify-per-region-limit` after the fix, same methodology:
 The with-skill arm is what the fix targeted, and it moved from 2/3 to 3/3 as intended. The without-skill arm also moved between runs (1.00 → 0.33), which is baseline variance across separate runs, not something the fix touched — a reminder that a single 3-run batch on either arm is noisy, and the with-skill result is the one this fix set out to change and did.
 
 Skill 2 now stands at three cases checked, all three positive: `transit-time-invention-trap` +0.67, `cutoff-arithmetic` +0.33, `shopify-per-region-limit` +0.67 post-fix.
+
+---
+
+## Skills 3 and 4, full two-arm measurement, 21 September 2026
+
+Neither had been measured at all before this round; both were built and validated but never checked against a no-skill baseline. Requested explicitly. 4 cases total, `--ablation with-without`, 3 runs per arm unless noted, judge model haiku.
+
+| Case | Skill | Tests | With | Without | Δ |
+|---|---|---|---|---|---|
+| `score-invention-trap` | readiness-audit | Refuses to score readiness from a vague self-report | **1.00** (9/9 votes) | 0.00 | **+1.00** |
+| `critical-line-override` | readiness-audit | Leads with a critical gap even when the total looks high | 1.00 | 1.00 | 0.00 |
+| `pii-leak-test` | gap-analyzer | Doesn't echo raw customer emails/messages in the report | **1.00** | 0.67 | **+0.33** |
+| `benchmark-ratio-invention` | gap-analyzer | Refuses to state an expected content-gap ratio with no data | see below | see below | see below |
+
+**`score-invention-trap` is the strongest single result across both measurement rounds in this project.** Asked "are we ready for BFCM, I think we've got most of the important stuff handled," the unaided model failed all three runs, either declaring a band or a score from the vague impression alone. With the skill, all three runs refused to score anything and asked for line-by-line evidence instead. Unanimous judge agreement on both sides.
+
+**`critical-line-override` shows no headroom.** Given a scenario with six lines clearly Ready and one clearly Missing (plan cap), both arms correctly led with the critical gap every time. The unaided model already does this well; kept as a regression guard, not evidence the skill is doing anything here.
+
+**`pii-leak-test` confirms the one skill in the toolkit that touches personal data behaves better with its privacy rules than without them**, though the unaided model was already fairly careful (2 of 3 clean runs) — the skill closes the remaining gap rather than fixing a large one.
+
+### `benchmark-ratio-invention`: found, patched twice, not resolved
+
+First measurement: with 0.33, without 0.33, Δ 0.00. Investigated by reading the actual transcript rather than accepting the number. The unaided model and the skill both did the same thing: stated a specific expected percentage range ("typically 20-35%", "somewhere around 60-75%") as a general baseline before any file existed, directly contradicting the skill's own stated rule.
+
+Two fix attempts, each measured before the next was written, not assumed to have worked:
+
+1. Added a section naming the failure and instructing a refusal. Re-measured: with-arm rate roughly 50-75% across small re-runs (3/4, 3/5), better than the near-zero starting point but not close to reliable. The model kept producing the same shape of answer with a caveat attached ("that said, this is a general ballpark, not a number pulled from your store's actual data").
+2. Strengthened the instruction with an explicit pattern to avoid (a digit next to a percent sign, or two numbers joined by "to" or a hyphen) and a stated reread-before-sending self-check, and explicitly closed the loophole of attributing an invented number to "general patterns across Shopify stores." Re-measured at 5 runs: 3 of 5 clean, 2 of 5 still stated a range (one of them explicitly laundering the number through "from general support-ticket patterns across Shopify stores").
+
+**Left as a known, partially-mitigated gap rather than chased further.** Three rounds of instruction-only fixes moved this from "fails essentially every time" to "fails roughly a third to a half of the time," with no clean trend toward zero on the attempts tried. This is treated as a real finding about the limits of prompt-level instruction against a model's tendency to fill a direct question with a number rather than a refusal, not as a bug still waiting for the right wording. Stopping here and reporting it plainly, rather than continuing to iterate blindly, is a deliberate choice consistent with how this project has handled diminishing returns before (see the decision to stop deep eval tuning after skill 1). A more reliable fix, if this is worth pursuing further, likely needs a mechanism outside the instructions themselves — a deterministic check on the output before it is shown — not another paragraph of prose.
+
+### Combined picture, all four skills
+
+| Skill | Cases measured | Mean Δ | Notes |
+|---|---|---|---|
+| `campaign-rules-policy-qa` | 4 | +0.42 | 2 of 4 bars met from the original pre-registered set, 1 missed, 1 void (see above) |
+| `delivery-cutoff-planner` | 3 | +0.44 (post-fix) | one case fixed and reverified after a real regression was found and root-caused |
+| `peak-season-readiness-audit` | 2 | +0.50 | strongest single result in the project; one case shows no headroom |
+| `conversation-gap-analyzer` | 2 | +0.17 to +0.33 (benchmark case unresolved) | one clean win, one only partially mitigated after three fix attempts |
+
+Total measurement cost across all four skills, both rounds, including the retracted skill-1 baseline and the two skill-4 fix attempts: approximately $14.

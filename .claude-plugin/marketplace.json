@@ -1,12 +1,14 @@
 {
   "name": "shopify-peak-season",
-  "owner": { "name": "Thu" },
-  "description": "Peak-season readiness skills for Shopify merchants: sale terms QA and delivery cutoff planning.",
+  "owner": {
+    "name": "Thu"
+  },
+  "description": "The BFCM Support Kit for Shopify merchants: six customer-service tools that work outside your chat app.",
   "plugins": [
     {
       "name": "shopify-peak-season-toolkit",
       "source": "./",
-      "description": "Sale terms and holiday policy QA, and per-region delivery cutoff planning, for Shopify peak season. No account, export or integration required."
+      "description": "The BFCM Support Kit: six tools for the customer service work outside a chat app. Readiness audit, sale terms and returns policy QA, per-zone delivery cutoffs, peak load and staff cover planning, a staff playbook with contingency plans, and a daily shipping exception watch. Independent of any inbox, chatbot or helpdesk."
     }
   ]
 }

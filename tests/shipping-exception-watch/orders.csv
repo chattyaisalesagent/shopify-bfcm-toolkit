@@ -1,0 +1,23 @@
+Name,Email,Fulfillment Status,Fulfilled at,Shipping Name,Shipping Address1,Shipping Phone,Shipping Country,Lineitem name,Tracking Company,Tracking Number,Shipment Status,Last Tracking Update,Promised Delivery Date,Notes
+#1001,ava.test@example.com,fulfilled,2026-11-24 10:15:00 -0500,Ava Testerson,1 Sample Street,+1-555-0101,US,Wool Scarf,UPS,1ZTEST0000000001,In transit,2026-12-06,,
+#1002,ben.test@example.com,fulfilled,2026-12-01 09:00:00 -0500,Ben Placeholder,2 Sample Street,+1-555-0102,US,Mug Set,USPS,9400TEST000000002,In transit,2026-12-07,,
+#1003,cleo.test@example.com,fulfilled,2026-12-02 11:30:00 -0500,Cleo Fakename,3 Sample Street,+1-555-0103,US,Candle,FedEx,7700TEST0003,In transit,2026-12-02,,
+#1004,dev.test@example.com,fulfilled,2026-11-27 14:00:00 -0500,Dev Mockley,4 Sample Road,+1-555-0104,CA,Winter Boots,Canada Post,CPTEST0000004,Exception,2026-12-05,,Held by customs - awaiting commercial invoice
+#1005,eli.test@example.com,fulfilled,2026-11-30 08:45:00 -0500,Eli Sampleton,5 Sample Street,+1-555-0105,US,Gift Box,UPS,1ZTEST0000000005,Delivered,2026-12-03,,
+#1006,fay.test@example.com,fulfilled,2026-11-30 08:50:00 -0500,Fay Dummy,6 Sample Street,+1-555-0106,US,Gift Box,UPS,1ZTEST0000000006,Delivered,2026-12-03,,
+#1007,gus.test@example.com,fulfilled,2026-11-20 16:20:00 -0500,Gus Example,7 Sample Street,+1-555-0107,US,Throw Blanket,USPS,9400TEST000000007,In transit,2026-11-28,,
+#1008,hana.test@example.com,fulfilled,2026-12-03 10:00:00 -0500,Hana Notreal,8 Sample Street,+1-555-0108,US,Express Tea Set,UPS,1ZTEST0000000008,In transit,2026-12-07,2026-12-05,Express upgrade
+#1009,ivo.test@example.com,fulfilled,2026-11-25 12:00:00 -0500,Ivo Pretend,9 Sample Street,+1-555-0109,US,Preorder Lamp,FedEx,7700TEST0009,In transit,2026-12-06,2026-12-12,
+#1010,jin.test@example.com,fulfilled,2026-12-01 13:10:00 -0500,Jin Madeup,10 Sample Road,+1-555-0110,CA,Ski Gloves,Canada Post,CPTEST0000010,In transit,2026-12-07,,Clearance delay at border
+#1011,kai.test@example.com,fulfilled,2026-12-03 09:30:00 -0500,Kai Fixture,11 Sample Street,+1-555-0111,US,Socks,USPS,9400TEST000000011,Out for delivery,2026-12-08,,
+#1012,lea.test@example.com,fulfilled,2026-12-04 15:00:00 -0500,Lea Stub,12 Sample Street,+1-555-0112,US,Scented Candle,UPS,1ZTEST0000000012,In transit,2026-12-07,,
+#1012,,,,,,,,Candle Holder,,,,,,
+#1013,max.test@example.com,unfulfilled,,Max Faker,13 Sample Street,+1-555-0113,US,Backorder Jacket,,,In transit,,,
+#1014,nia.test@example.com,fulfilled,2026-11-30 10:00:00 -0500,Nia Testcase,14 Sample Street,+1-555-0114,US,Beanie,USPS,9400TEST000000014,In transit,2026-12-03,,
+#1015,omar.test@example.com,fulfilled,2026-11-23 10:00:00 -0500,Omar Sample,15 Sample Road,+1-555-0115,CA,Parka,Canada Post,CPTEST0000015,Delivered,2026-12-02,,Customs cleared 2026-11-28
+#1016,pia.test@example.com,fulfilled,2026-12-04 11:00:00 -0500,Pia Mock,16 Sample Street,+1-555-0116,US,Earrings,USPS,9400TEST000000016,In transit,2026-12-04,,
+#1017,quin.test@example.com,fulfilled,2026-12-02 17:00:00 -0500,Quin Dummyson,17 Sample Street,+1-555-0117,US,Poster,UPS,1ZTEST0000000017,Label created,2026-12-02,,
+#1018,rae.test@example.com,fulfilled,2026-11-26 10:00:00 -0500,Rae Faux,18 Sample Avenue,+61-555-0118,AU,Tote Bag,DHL,DHLTEST0018,In transit,2026-12-06,,
+#1019,sol.test@example.com,fulfilled,2026-11-18 10:00:00 -0500,Sol Imaginary,19 Sample Road,+1-555-0119,CA,Snow Pants,Canada Post,CPTEST0000019,Held at customs,2026-12-01,,
+#1020,tess.test@example.com,fulfilled,2026-11-28 10:00:00 -0500,Tess Pseudo,20 Sample Street,+1-555-0120,US,Planner,USPS,9400TEST000000020,Delivered,2026-12-04,,
+#1021,uma.test@example.com,fulfilled,2026-12-01 10:00:00 -0500,Uma Samplewood,21 Sample Road,+1-555-0121,CA,Mittens,Canada Post,CPTEST0000021,In transit,2026-12-07,,Customs cleared 2026-12-05

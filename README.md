@@ -1,14 +1,23 @@
-# Shopify Peak-Season Readiness Toolkit
+# The BFCM Support Kit (Shopify Peak-Season Readiness Toolkit)
 
-Two Claude Code skills that turn peak-season decisions into publishable artifacts for a Shopify store: sale terms and holiday policy QA, and per-region delivery cutoff dates.
+Six skills for the customer service work that happens outside a chat app: what a Shopify store promises shoppers, how the team covers the rush, and what happens to orders once they ship. Published by [Chatty](https://chatty.net/bfcm-2026/). Every skill drafts; nothing changes the store or messages a customer.
 
-No Shopify account, export, API key or integration required. Everything runs from what you tell it.
+Each skill also ships as a copy-paste prompt in [`prompts/`](prompts/) for any AI chat (ChatGPT, Gemini, Claude, Copilot).
 
-## What it does
+## What it does, in season order
 
-**`campaign-rules-policy-qa`** — Check a sale terms page you already have for contradictions, missing rules and ambiguity, or write one from scratch by answering a fixed set of questions. Covers discount stacking, sale-item returnability, free-shipping thresholds, exclusions, and holiday returns and exchanges. Flags what Shopify's platform cannot actually enforce, so you are not publishing a promise the store will break.
+| # | Skill | When | What you get |
+|---|---|---|---|
+| 1 | `peak-season-readiness-audit` | October | A score per readiness line, the three fixes to make first, and which skill handles each |
+| 2 | `campaign-rules-policy-qa` | Every sale | Sale terms and holiday returns policy checked for gaps, and every place the same term reads differently |
+| 3 | `delivery-cutoff-planner` | Early November | Per-zone "order by" dates (script), and on-track / late / won't-make-it messages |
+| 4 | `peak-load-cover-planner` | Late October | Daily volume forecast to mid-January, a named roster, and the helpdesk bill if the cap is exceeded (script) |
+| 5 | `peak-season-playbook` | Early November | A one-page staff brief, a who-decides-what table, and three contingency plans |
+| 6 | `shipping-exception-watch` | Daily in season | Late, stalled, customs-held and reported-missing orders from your order export, ranked, with draft messages (script) |
 
-**`delivery-cutoff-planner`** — Compute the last day a customer can order and still get their package by a target date, per shipping zone, from your own processing time and carrier transit estimates. Also writes the three delivery messages Shopify does not provide out of the box: on track, running late, and won't arrive in time.
+`withdrawn/conversation-gap-analyzer` is kept for reference but is not part of the kit.
+
+Rebuild the prompt copies and download zips for chatty.net with `scripts/package-kit.sh`.
 
 ## Why
 
@@ -18,7 +27,7 @@ Full reasoning, including which Shopify capabilities this does and does not dupl
 - [`docs/skill-opportunity-assessment.md`](docs/skill-opportunity-assessment.md) — why these two, and what was rejected or deferred
 - [`docs/platform-compatibility.md`](docs/platform-compatibility.md) — how this packages across Claude Code and other agent platforms
 
-Both skills carry one rule throughout: **never state a commercial rule you were not given.** A missing answer is marked and asked about; it is never guessed. See [`evals/RESULTS.md`](evals/RESULTS.md) for measured evidence that this matters — an unguided assistant asked to "write our sale terms" invents a stacking rule, a returns rule and an exclusion list in two of three tries.
+Every skill carries one rule throughout: **never state a commercial rule you were not given.** A missing answer is marked and asked about; it is never guessed. See [`evals/RESULTS.md`](evals/RESULTS.md) for measured evidence that this matters — an unguided assistant asked to "write our sale terms" invents a stacking rule, a returns rule and an exclusion list in two of three tries.
 
 ## Install
 

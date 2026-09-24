@@ -1,0 +1,21 @@
+{
+  "_how_these_were_computed": "By hand, independently of plan.py. Level = 800 x 25/100 x 1.10 = 220 per day. Forecast = 220 x phase factor x 0.9 on Sat/Sun x any day override, rounded half up. Hours needed = forecast x 6 / 60. Hours available = sum of shift lengths of people on shift x 0.75.",
+  "window": {"start": "2026-11-20", "end": "2027-01-15", "days": 57},
+  "this_year_bfcm_level_per_day": 220,
+  "days": {
+    "2026-11-20": {"forecast": 110, "required": 11.0, "available": 12.0, "gap": 0.0, "on_shift": ["Anna", "Ben"]},
+    "2026-11-26": {"forecast": 110, "required": 11.0, "available": 9.0, "gap": 2.0, "on_shift": ["Anna", "Cara (seasonal)"]},
+    "2026-11-27": {"forecast": 220, "required": 22.0, "available": 15.0, "gap": 7.0, "uncovered": ["00:00-09:00", "20:00-24:00"]},
+    "2026-11-28": {"forecast": 198, "required": 19.8, "available": 6.0, "gap": 13.8, "on_shift": ["Anna", "Cara (seasonal)"]},
+    "2026-12-25": {"forecast": 88, "required": 8.8, "available": 9.0, "gap": 0.0},
+    "2026-12-26": {"forecast": 119, "required": 11.9, "available": 6.0, "gap": 5.9},
+    "2027-01-02": {"forecast": 79, "required": 7.9, "available": 3.0, "gap": 4.9, "on_shift": ["Anna"]}
+  },
+  "phase_totals": {"pre_sale": 748, "bfcm_week": 1496, "december": 2694, "returns": 1922},
+  "cost": {
+    "2026-11": {"total_volume": 3084, "overage_blocks": 1, "estimated_bill": 340, "lower_bound_only": false},
+    "2026-12": {"total_volume": 3992, "overage_blocks": 10, "estimated_bill": 700, "lower_bound_only": false},
+    "2027-01": {"total_volume": 1284, "overage_blocks": 0, "estimated_bill": 300, "lower_bound_only": true},
+    "total_estimated_bill": 1340
+  }
+}

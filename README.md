@@ -49,7 +49,7 @@ claude --plugin-dir /path/to/shopify-peak-season-toolkit
 **Install once, keep it:**
 
 ```bash
-claude plugin marketplace add thulmservice/shopify-peak-season-toolkit
+claude plugin marketplace add chattyaisalesagent/shopify-bfcm-toolkit
 claude plugin install shopify-peak-season-toolkit
 ```
 
@@ -58,7 +58,7 @@ claude plugin install shopify-peak-season-toolkit
 Verified: install via marketplace runs end to end with the Codex CLI and lands the correct files, skills included. Whether Codex actually *invokes* a skill on a natural request hasn't been checked yet — that needs a logged-in Codex session, which this install test didn't have.
 
 ```bash
-codex plugin marketplace add thulmservice/shopify-peak-season-toolkit
+codex plugin marketplace add chattyaisalesagent/shopify-bfcm-toolkit
 codex plugin add shopify-peak-season-toolkit@shopify-peak-season
 ```
 

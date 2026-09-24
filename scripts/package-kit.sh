@@ -59,7 +59,7 @@ ChatGPT
 
 Claude Code / Codex
   Install all six from GitHub:
-  claude plugin marketplace add thulmservice/shopify-peak-season-toolkit
+  claude plugin marketplace add chattyaisalesagent/shopify-bfcm-toolkit
   claude plugin install shopify-peak-season-toolkit
 
 Any other AI

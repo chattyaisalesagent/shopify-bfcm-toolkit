@@ -1,0 +1,48 @@
+{
+ "_how_these_were_computed": "By hand. Flat 100 a day x 6 min = 10.0 hours, share 100%. Ann works weekdays 8h. Max 3 days in a row. Walk: 25 to 27 Nov short 2.0, Bo added each day (run 1, 2, 3; week hours 6, 12, 18). 28 Nov Sat: Ann would make 4 in a row, Bo is off: backlog 10. 29 Nov Sun: Ann would join her 30 Nov to 4 Dec run (6 days), Bo added (week hours 24): 20 - 6 = 14. 30 Nov: 24 - 14 = 10 (Bo added). 1 Dec: 20 - 14 = 6 (Bo, run 3). 2 Dec: Bo would be 4 in a row: 16 - 8 = 8. 3 Dec: Bo added: 18 - 14 = 4. 4 Dec: Bo added (week hours 24): 14 - 14 = 0. 5 Dec Sat: Ann would be 6 in a row, Bo would go to 30 hours: backlog 10. Without the draft Ann alone ends every day short: 2, 4, 6, 16, 26, 28, 30, 32, 34, 36, 46.",
+ "backlog_end": {
+  "2026-11-25": 0.0,
+  "2026-11-26": 0.0,
+  "2026-11-27": 0.0,
+  "2026-11-28": 10.0,
+  "2026-11-29": 14.0,
+  "2026-11-30": 10.0,
+  "2026-12-01": 6.0,
+  "2026-12-02": 8.0,
+  "2026-12-03": 4.0,
+  "2026-12-04": 0.0,
+  "2026-12-05": 10.0
+ },
+ "bo_added": [
+  "2026-11-25",
+  "2026-11-26",
+  "2026-11-27",
+  "2026-11-29",
+  "2026-11-30",
+  "2026-12-01",
+  "2026-12-03",
+  "2026-12-04"
+ ],
+ "ann_added": [],
+ "ann_flag": [
+  {
+   "from": "2026-11-30",
+   "to": "2026-12-04",
+   "days": 5
+  }
+ ],
+ "bo_flag": [],
+ "before_draft": {
+  "backlog_days": 11,
+  "final_backlog_hours": 46.0
+ },
+ "need_extra_help_dates": [
+  "2026-11-28",
+  "2026-11-29",
+  "2026-11-30",
+  "2026-12-01",
+  "2026-12-02",
+  "2026-12-03",
+  "2026-12-05"
+ ]
+}

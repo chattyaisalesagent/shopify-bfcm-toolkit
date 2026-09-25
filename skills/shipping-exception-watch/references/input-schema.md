@@ -1,41 +1,67 @@
 # Input for `scripts/watch.py`
 
-The script takes two files: the merchant's order export as CSV, and a small JSON config built from the merchant's answers. Every config value is either a merchant fact or a merchant decision. Never fill one in on the merchant's behalf.
+The script takes two files: a CSV of shipped orders with a delivery status per order, and a small JSON config built from what the merchant tells you. Every config value is either a merchant fact or a merchant decision. Never fill one in on the merchant's behalf.
 
 ```
 python3 scripts/watch.py <orders.csv> <config.json>
 ```
 
-## Getting the export out of Shopify
+## What Shopify's order export does and does not contain
 
-In Shopify admin: **Orders**, filter to the orders that matter (for example Fulfillment status = Fulfilled, and a date range covering the last few weeks of shipments), then **Export**, choose "Orders matching your search" or "Current page", and a CSV format. Shopify emails the file or downloads it directly, depending on size.
+Shopify's Orders CSV export (help.shopify.com, Exporting orders) has order-level and line-item columns such as `Name` (the order number), `Fulfillment Status`, `Fulfilled at`, `Shipping Country`, `Shipping Method` and `Notes`. **It has no tracking number, no carrier, no delivery status, no last scan date, and no estimated or delivered date.** `Fulfillment Status` says whether the order was fulfilled, not whether the parcel arrived. `Notes` is the order note written by the shopper or staff, not a tracking event.
 
-**Be honest with the merchant about what that file contains.** Shopify's standard order export carries order-level fields such as `Name` (the order number), `Fulfillment Status`, `Fulfilled at`, `Shipping Name` and `Shipping Country`. It is not a carrier tracking report. Before relying on it, check the actual file for:
+So the export alone cannot be classified. Use one of two routes.
 
-- **a delivery status per shipment** (Delivered, In transit, Exception). `Fulfillment Status` is not this: it says whether the order was fulfilled, not whether the parcel arrived.
-- **a last tracking update date**, the date of the carrier's most recent scan.
-- **carrier and tracking number.**
+## Route A: Shopify only (Orders list Delivery status filter)
 
-We could not confirm that the standard export includes carrier scan events, and the merchant should assume it does not until they see the columns in their own file. Those columns usually come from somewhere else: an export from the tracking or order-status app the store already uses, the carrier's own shipment report from the merchant's carrier account, or a column the merchant adds by hand for the orders they are worried about. Merge them into one CSV with one row per order (or one row per line item; the script merges rows that share an order number).
+The admin Orders page has a **Delivery status** filter (help.shopify.com, Filtering orders) with these values: In transit, Out for delivery, Attempted delivery, Delayed, Failed delivery, Delivered, Tracking added, No status.
 
-If the file has no delivery status at all, the script stops (exit code 3) because it cannot tell a delivered order from one still moving. If the file has no last-update date, the script skips the stalled-tracking group and says so; it never guesses a tracking status.
+1. In Shopify admin, go to **Orders**. Filter **Delivery status** to one value, for example Failed delivery.
+2. Click **Export** and export the orders the filter shows. Up to 50 orders or the current page download straight away; larger exports are emailed.
+3. Open the CSV and add a column named `Delivery Status`, filled with the filter value (`Failed delivery`) on every row.
+4. Repeat for Attempted delivery, Delayed, In transit, Tracking added and No status. Out for delivery can be left out: Shopify's own Out for delivery notification covers it. Export Delivered only for orders a shopper has reported missing.
+5. Stack the files into one CSV. Rows for the same order are merged. If one order shows up under two different statuses (it has more than one shipment, or its status changed between exports), it goes to `needs_review`.
 
-## Columns
+What route A can find: past promised date (from `Fulfilled at` plus the merchant's rule, or a promised date the merchant adds), delivery problems (Failed delivery, Attempted delivery, Delayed), delivered but not received, and a `check_tracking` list of possible stalls and possible customs holds to confirm on the tracking page (see below).
 
-The script auto-detects common header names, case-insensitively. Anything it does not recognise can be mapped in `columns` in the config.
+What it **cannot confirm**, and the script says so in `skipped_groups`:
 
-| Field | Required | Headers it looks for | Used for |
+- **Held at customs.** None of Shopify's delivery status values mentions customs, and the export has no carrier event text. When every status in the file is one of Shopify's filter values and no `tracking_detail` or `last_update` column is present, `data_source` is `shopify_delivery_status` and the customs group is skipped.
+- **Tracking stalled.** The export has no scan dates. The group is skipped; it is never guessed from `Fulfilled at`.
+
+Without scan dates the script cannot tell whether an order has moved. What it can do is compare the time since `Fulfilled at` with numbers the merchant gives, and list the orders worth checking by hand. Ask for these three; never fill them in:
+
+- **`ship_from_country`**: the country the store ships from, as the code Shopify's `Shipping Country` uses (`US`). Orders to any other country are international.
+- **`normal_transit_days`**: how many calendar days orders to each country normally take to arrive, `{"by_zone": {"US": 5, "CA": 8}}` and/or `{"default": N}`. This is how long parcels usually take, not the promise.
+- **`no_scan_days`**: how many days after `Fulfilled at` a Tracking added or No status order starts to look like the carrier never scanned it.
+
+Leave any of them out (or `null`) and its rule is skipped, with the reason in `check_tracking_rules_skipped`. Candidate orders go to `check_tracking` with `check_reasons`; nothing there is a confirmed problem, and none gets a draft.
+
+## Route B: tracking app or carrier export
+
+An export from the store's tracking app or the carrier's shipment report usually has a status per shipment, the text of the last event, and its date. Column names differ by app, so check the merchant's file and map them in `columns`. Keep the order number column so the merchant can match rows to orders.
+
+The status detail column (the last event text, such as "Held by customs - awaiting commercial invoice") **must be mapped explicitly** as `columns.tracking_detail`. It has no automatic match, because the obvious candidate in a Shopify file, `Notes`, is the order note: a shopper asking "will I pay customs fees?" would otherwise put a normal order in the customs group. Never map `Notes` as `tracking_detail`.
+
+Without a `tracking_detail` mapping on route B, customs holds and delivery problems are found only where the status column itself says so, and `limits` in the output says this.
+
+## Columns the script reads
+
+Only these fields are read. Everything else in the file (names, emails, phones, addresses, notes, line items, prices) is ignored.
+
+| Field | Required | Headers it looks for automatically | Used for |
 |---|---|---|---|
 | `order_number` | always | Name, Order, Order Number, Order Name, Order #, Order ID | identifying the order |
-| `delivery_status` | always | Shipment Status, Delivery Status, Tracking Status, Carrier Status, Shipping Status | delivered vs not; customs keywords |
+| `delivery_status` | always | Delivery Status, Shipment Status, Tracking Status, Carrier Status, Shipping Status | delivered or not; delivery-problem and customs words |
 | `ship_date` | when the promise is a rule | Fulfilled at, Fulfillment Date, Shipped At, Ship Date, Shipped Date | counting the promise from ship date |
-| `promised_date` | when `promise.source` is `column` | Promised Delivery Date, Promised Date, Delivery Promise, Estimated Delivery Date, Expected Delivery Date | the promise itself |
-| `zone` | when the rule differs by zone | Shipping Country, Shipping Zone, Zone, Shipping Country Code | picking the business days per zone |
-| `last_update` | optional | Last Tracking Update, Last Tracking Event, Last Update, Last Scan Date, Tracking Updated At, Last Event Date | stalled-tracking check |
-| `notes` | optional | Notes, Tracking Status Detail, Status Detail, Tracking Detail, Last Event | customs keywords |
+| `promised_date` | when `promise.source` is `column` | Promised Delivery Date, Promised Date, Delivery Promise | the promise itself |
+| `zone` | when the rule differs by country | Shipping Country, Shipping Zone, Zone, Shipping Country Code, Destination Country | picking the business days per zone |
+| `last_update` | route B, optional | Last Tracking Update, Last Tracking Event Date, Last Update, Last Scan Date, Tracking Updated At, Last Event Date | stalled-tracking check |
+| `tracking_detail` | route B, optional | none: map it in `columns` | customs and delivery-problem words |
 | `carrier` | optional | Tracking Company, Carrier, Shipping Carrier, Courier | shown in the output |
-| `tracking_number` | optional | Tracking Number, Tracking Numbers, Tracking, Tracking No | shown in the output |
-| `customer_name` | optional | Shipping Name, Billing Name, Customer Name, Customer, First Name | first name only, for the greeting |
+| `tracking_number` | optional | Tracking Number, Tracking Numbers, Tracking No | shown in the output |
+
+A tracking app's "estimated delivery" column is the carrier's forecast, not what the store promised, so it is not picked up as `promised_date` automatically. Map it only if the merchant confirms that date is what shoppers were told.
 
 The script validates columns first and exits with code 3, listing every missing column, the headers it tried and the headers it found. Fix the export or add a `columns` mapping, then run again.
 
@@ -54,35 +80,41 @@ Dates must be `YYYY-MM-DD`, optionally followed by a time and timezone (Shopify'
     "holidays": ["2026-11-26"]
   },
   "contacted_orders": ["#1005", "#1015"],
-  "columns": { "delivery_status": "Carrier Status" },
+  "ship_from_country": null,
+  "normal_transit_days": null,
+  "no_scan_days": null,
+  "columns": {
+    "delivery_status": "Status",
+    "tracking_detail": "Last Checkpoint Message",
+    "last_update": "Last Checkpoint Date"
+  },
   "delivered_values": ["delivered"],
-  "customs_keywords": ["customs", "clearance"],
   "date_format": null
 }
 ```
 
-**`today`** (optional, defaults to the machine's date). Set it explicitly so the result is reproducible and the merchant can check the arithmetic. `--today` on the command line overrides it.
+**`today`** (optional, defaults to the machine's date). Set it explicitly so the result is reproducible. `--today` on the command line overrides it.
 
-**`stall_days`** (required key). How many days without a tracking update the merchant counts as stalled. A merchant shipping domestic express and one shipping international economy will answer very differently, so ask; the script refuses to run without the key. Set it to `null` only when the merchant explicitly does not want this check.
+**`stall_days`** (required key). How many days without a tracking update the merchant counts as stalled. The script refuses to run without the key. Set it to `null` when the merchant does not want this check or the file has no scan date (route A).
 
 **`promise`** (required). How the merchant decides the delivery date a shopper was promised:
 
-- `source`: `"column"` (the file has a promised date for every order), `"rule"` (ship date plus N business days), or `"column_or_rule"` (use the column where it is filled, the rule where it is empty).
-- `business_days.default`: business days after the ship date, for any zone not listed in `by_zone`. Leave it out if every zone must be named; orders from an unnamed zone then go to `needs_review` rather than getting a guessed promise.
+- `source`: `"column"` (the file has a promised date for every order), `"rule"` (ship date plus N business days), or `"column_or_rule"` (column where filled, rule where empty).
+- `business_days.default`: business days after the ship date for any zone not in `by_zone`. Leave it out if every zone must be named; orders from an unnamed zone then go to `needs_review`.
 - `business_days.by_zone`: business days per zone, keyed by the exact value in the zone column (Shopify's `Shipping Country` holds codes such as `US`, `CA`).
 - `non_working_weekdays`: default `[5, 6]` (Saturday, Sunday; Monday is 0).
 - `holidays`: carrier or warehouse closed dates, `YYYY-MM-DD`. The ship date itself is not counted; the count starts the day after.
 
-The rule should match what the store actually told shoppers (checkout delivery estimate, shipping policy, or the cutoff table from `delivery-cutoff-planner`), not what the merchant hopes the carrier achieves.
+**`ship_from_country`**, **`normal_transit_days`**, **`no_scan_days`** (optional, route A only). The merchant's numbers for the `check_tracking` candidates, described under route A. Ignored on route B. `normal_transit_days` must be whole calendar days, 1 or more; `no_scan_days` likewise. A route A config for a US store might carry `"ship_from_country": "US", "normal_transit_days": {"by_zone": {"US": 5, "CA": 8, "GB": 10}}, "no_scan_days": 3`.
 
-**`contacted_orders`** (optional). Order numbers where the shopper has already said the parcel did not arrive, pasted by the merchant from their inbox. With or without `#`. Without this list the `delivered_but_contacted` group is skipped and reported as skipped.
+**`contacted_orders`** (optional). Order numbers where the shopper has already said the parcel did not arrive, with or without `#`. Without it the `delivered_but_contacted` group is skipped.
 
-**`columns`** (optional). Map any field above to an exact header name in the file. Overrides auto-detection.
+**`columns`** (optional). Map any field above to an exact header. Required for `tracking_detail`.
 
-**`delivered_values`** (optional, default `["delivered"]`). Status values, compared whole and case-insensitively, that mean the carrier marked the parcel delivered. Add the merchant's own wording if their file uses something like `"Delivered to mailbox"`.
+**`delivered_values`** (optional, default `["delivered"]`). Status values, compared whole and case-insensitively, that mean delivered. Add the file's own wording, such as `"Delivered to mailbox"`.
 
-**`customs_keywords`** and **`customs_released_phrases`** (optional). Override the lists in `exception-types.md`.
+**`customs_keywords`**, **`customs_released_phrases`**, **`problem_keywords`** (optional). Override the lists in `exception-types.md`.
 
 ## Output
 
-JSON on stdout: `counts` per group, `skipped_groups` with the reason, `urgency_rank` (one line per exception order), `groups` with the order details, `needs_review` (orders the rules could not classify, each with a reason), `contacted_but_on_track` (shoppers who asked about an order that shows no problem in the file), and `contacted_orders_not_in_file`. `column_mapping` shows which header was used for each field, so the merchant can check the script read the right column.
+JSON on stdout: `data_source` (`shopify_delivery_status` or `tracking_export`), `counts` per group, `skipped_groups` with the reason, `limits` (checks that ran with less data than they need), `check_tracking_rules_skipped` and `check_tracking_next_step` (route A), `urgency_rank`, `groups` with the order details and matched keywords, `needs_review` with reasons, `contacted_but_on_track`, and `contacted_orders_not_in_file`. `column_mapping` shows which header was used for each field, so the merchant can check the script read the right column.

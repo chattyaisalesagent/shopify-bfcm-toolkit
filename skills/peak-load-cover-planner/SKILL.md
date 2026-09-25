@@ -1,44 +1,48 @@
 ---
 name: peak-load-cover-planner
-description: Forecast customer-service message volume per day from the week before Black Friday to mid-January, build a named staff roster that includes weekends and the returns weeks after the holiday, show which days the team is short of hours and which hours of the day nobody covers, and estimate the helpdesk bill when volume goes over the plan cap. Use when a Shopify merchant asks how many support messages to expect over BFCM or the holidays, whether their team can keep up, who should work which days, whether to hire seasonal help, or what their helpdesk will cost if they exceed their ticket or conversation limit.
+description: Forecast customer-service message volume per day from the week before Black Friday to mid-January, from last year's daily counts, last year's BFCM-week average, or a new store's normal weeks and expected sales lift. Carry unanswered work over to the next day, draft a named roster that fills short days from the people who say they can take extra days, flag anyone working too many days in a row, list the days that still need extra help and the hours of the day nobody covers, and estimate the helpdesk bill including a separate AI resolution meter. Use when a Shopify merchant asks how many support messages to expect over BFCM or the holidays, whether their team (even a solo owner) can keep up, who should work which days, whether to hire seasonal help, or what their helpdesk will cost over the plan cap.
 license: MIT
 compatibility: Runs the bundled Python script with the standard library only, no network access and no dependencies. Falls back to guided manual arithmetic if scripts cannot run in the environment.
 metadata:
-  version: "0.1"
+  version: "0.2"
 ---
 
 # Peak load and cover planner
 
-Most support teams plan for Black Friday weekend and then stop. The season does not stop there. December brings "where is my order" questions right up to the holiday, and the returns wave comes after it: in the US it peaks around 26 December (Loop Returns data across Shopify merchants). Weekends stay busy throughout. This skill turns the merchant's own numbers into a day-by-day forecast, a roster with names on it, and a bill estimate, so the gaps show up on paper in October instead of in the inbox in December.
+Most support teams plan for Black Friday weekend and then stop. The season does not stop there. December brings "where is my order" questions right up to the holiday, and the returns wave comes after it: in the US the top return day is 26 December (Loop Returns data, see `references/phase-calendar.md`). Weekends stay busy, and work not done on Sunday is still there on Monday. This skill turns the merchant's own numbers into a day-by-day forecast, a draft roster with names on it, and a bill estimate, so the gaps show up on paper in October instead of in the inbox in December.
 
 ## The rule that governs everything here
 
 **Every number in the plan is either something the merchant told you or an estimate the merchant chose. Never a number you picked.**
 
-The forecast is only as honest as its weakest input, and the weakest input is usually the tickets-per-order ratio or the phase shape. If the merchant does not know a figure, show them the range of what it could be, where that range comes from, and make them choose. A silently chosen industry figure looks exactly like a fact once it is inside a table, and a plan built on it staffs the wrong days.
+That includes sales uplift, tickets per order, weekend level, hourly pattern and helpdesk prices. If the merchant does not know a figure, show them what it could be and where that comes from, and make them choose. A silently chosen industry figure looks exactly like a fact once it is inside a table.
 
-Label every assumption in the output as **merchant-stated** (they know it from their own data) or **merchant-chosen estimate** (they picked it because they did not know). The script refuses any other label. If an input is still open, mark it `[DECISION NEEDED: <the question>]` and do not run the forecast around it.
+Label every assumption as **merchant-stated** (from their own data) or **merchant-chosen estimate** (picked because they did not know). The script refuses any other label. If an input is still open, mark it `[DECISION NEEDED: <the question>]` and do not run the forecast around it.
 
 ## Ask one question at a time
 
-Ask in this order and wait for each answer. Merchants answer a list of ten questions with three answers.
+Ask in this order and wait for each answer. The no-code prompt version of this tool asks the same questions in the same order.
 
-1. **Last year's BFCM-week volume.** Conversations or tickets per day across Black Friday to the Thursday after Cyber Monday. Their helpdesk reports have it.
-2. **If they do not have that:** orders per day in the same week, plus their own tickets-per-order ratio from any normal month (tickets divided by orders). If they have no ratio either, show them this and make them pick a number:
+1. **Dates.** Black Friday, Cyber Monday, the main holiday they plan around, and the end date (usually mid-January). For 2026: Black Friday Friday 27 November, Cyber Monday 30 November, Christmas Friday 25 December.
+2. **What history they have.** Pick the first route that fits:
+   - **A. Last year's daily counts** (conversations or tickets per day, from the helpdesk export) from a week before last Black Friday to mid-January. Best. Ask for the file or the list, and last year's Black Friday (28 November 2025 in the US).
+   - **B. Only last year's BFCM-week total or average.** Or orders per day that week plus their own tickets per 100 orders from a normal month. If they have no ratio, show them this and make them pick:
+     > Gorgias platform data from March 2026 ranges from 19 tickets per 100 orders (toys and games) to 46 (electronics, vehicles and parts) (https://www.gorgias.com/blog/ticket-volume). A helpdesk vendor has a reason to publish higher numbers, and your store may sit outside the range. Which number do you want to plan with?
+   - **C. New store, no last year.** Their last four normal weeks: messages per week, or orders per week and messages per 100 orders.
+3. **Growth** (routes A and B). Expected change on last year, in percent.
+4. **Shape** (routes B and C).
+   - Route B: how busy an average day in the week before the sale, December up to the holiday, and the returns weeks is, compared with an average BFCM-week day. See `references/phase-calendar.md`.
+   - Route C: how many times a normal day they expect in each phase (pre-sale, BFCM week, December, returns). This is their sales plan, not yours. If they have no number, ask for their expected BFCM-week order lift in plain words, then offer scenarios with every day's forecast times 1.5 and 2, labelled as scenarios.
+5. **Weekend level** (routes B and C). An average weekend day divided by an average weekday, averaged separately. Offer the one data point in `references/phase-calendar.md` (Chatty data: shopping questions 89, order questions 61, per 100 on weekdays). Their choice.
+6. **Single days they expect to spike** that are not already in their data, such as a second launch. Optional.
+7. **Minutes per conversation**, from their helpdesk (average handle time) or their own estimate.
+8. **The team, one person at a time:** name, weekday shift, weekend shift (or none), days off, start and end dates for seasonal hires, and for the draft roster: which weekdays they could take an extra shift, the shift times for an added day, and their weekly hour limit.
+9. **Longest run of working days** they allow. If they have no rule, the plan uses six and says so.
+10. **Share of a shift spent actually answering customers**, as a percent.
+11. **Hourly pattern** (optional). The share of a day's messages that arrives in each hour, from their helpdesk's busiest-hours report. Without it, the plan lists uncovered hours but cannot count the messages in them. Do not make one up.
+12. **Helpdesk plan:** price per month, what it counts (tickets, conversations), how many are included, the overage price and block, and volume they expect outside the window for part-months. Then: does the plan bill AI-resolved conversations on a separate meter? If yes, the AI price, included resolutions, overage price per resolution, the share they expect AI to resolve, and whether a resolved conversation is also charged as a ticket. (On Gorgias it is: "You are charged both a ticket fee + automation fee if AI Agent responds to a ticket and does not hand over the conversation to a human agent", https://docs.gorgias.com/en-US/how-youre-billed-for-using-gorgias-199385.) Prices come from their plan page or invoice, never from you.
 
-   > Published figures from one helpdesk vendor range from roughly 19 to 46 tickets per 100 orders depending on industry (source: Gorgias, https://www.gorgias.com/blog/ticket-volume). A helpdesk vendor has a reason to publish higher numbers, and your store may sit outside the range. Which number do you want to plan with?
-
-   Record their answer as a merchant-chosen estimate. Do not pick the midpoint for them.
-3. **Expected growth this year**, in percent. Planned ad spend, email list size and last year's sale depth are all reasonable ways for them to reason about it. Their number, not yours.
-4. **Phase shape.** Compared with a BFCM-week day, how busy is a day in the week before the sale, a December day, and a day in the returns weeks after the holiday? Read `references/phase-calendar.md` and walk them through it. If they have last year's daily export, derive the factors from it and label them merchant-stated.
-5. **Weekend level.** A Saturday or Sunday as a fraction of a weekday. See the data point in `references/phase-calendar.md`; again, their choice.
-6. **Any single days they expect to spike**, such as 26 December or the day a second promotion launches. Optional.
-7. **Time per conversation**, in minutes, from their helpdesk (average handle time) or their own estimate. Remind them BFCM conversations are often shorter than returns conversations; if they think the difference matters, run the plan twice.
-8. **The team, one person at a time:** name, weekday shift, weekend shift (or none), days off in the window, and start and end dates for seasonal hires.
-9. **Share of a shift spent actually answering customers**, as a percent. Breaks, meetings, packing and admin come out of it. Their number.
-10. **Helpdesk plan:** price per month, how many tickets or conversations are included, the overage price and the block it is charged in (per ticket, per 100), what the unit is (ticket, conversation, resolution), and, for months the window only partly covers, the volume they expect on the days outside it.
-
-Check the input before running. If a person has no shifts at all, or the helpdesk billing unit does not match what the forecast counts (tickets versus conversations), stop and ask.
+Before running, show every input in one table with its label and ask them to confirm. If a person has no shifts and no extra days, or the helpdesk unit does not match what the forecast counts, stop and ask.
 
 ## Run the plan
 
@@ -48,36 +52,38 @@ Assemble the JSON described in `references/input-schema.md` and run:
 python3 scripts/plan.py <input.json> --markdown
 ```
 
-Use the JSON output (without `--markdown`) if you need to process the result further.
-
-The script returns: the assumption table with each label, one row per day (forecast, hours needed, hours available, gap, who is on shift, which hours of the day nobody covers), a summary per phase, the list of gap days, and the bill per calendar month.
+Use the JSON output (without `--markdown`) to process the result further. The script returns the assumptions, one row per day (forecast, hours needed, who is on shift and whether the draft added them, hours available, gap, work carried in and left at the end of the day, uncovered hours, and messages in hours nobody covers), a phase summary, the draft roster before and after, a per person view with run flags, the days that still need extra help, the bill per month, and the scenario table.
 
 ### Manual fallback
 
-If scripts cannot run in this environment, do the same arithmetic by hand and show every step so the merchant can check it:
+If scripts cannot run, do the same arithmetic by hand and show every step. Write one row per day; fill the Day column by stepping one day at a time from a known anchor (27 November 2026 is a Friday; 25 December 2026 is a Friday) and check it against that anchor.
 
-1. **Level** = last year's per-day volume (or orders per day x tickets per 100 orders / 100) x (1 + growth / 100).
-2. **Forecast for a day** = level x phase factor (BFCM week is 1.0) x weekend factor on Saturdays and Sundays x any single-day multiplier. Round half up to a whole conversation.
-3. **Hours needed** = forecast x minutes per conversation / 60, to one decimal.
-4. **Hours available** = sum of shift lengths of everyone working that day x share answering / 100, to one decimal. Skip people on a day off or outside their start and end dates.
-5. **Gap** = hours needed minus hours available, when positive.
-6. **Bill for a month** = plan price + (blocks over the cap, rounded up) x price per block. If the window covers only part of a month and the merchant gave no volume for the rest, say the bill is a lower bound.
-
-Phases: the week before Black Friday is pre-sale; Black Friday to the Thursday after Cyber Monday is BFCM week; the day after that to the day before the holiday is December; the holiday to the end date is returns. Write the full daily table; do not summarise a phase as "similar every day", because weekends and days off change it.
+1. **Forecast.**
+   - Route A: for days before the day before the holiday, last year's day at the same distance from Black Friday (same weekday; 27 Nov 2026 takes 28 Nov 2025, that is 364 days earlier); from the day before the holiday on, the same date last year. Multiply by (1 + growth / 100).
+   - Routes B and C: phase average = BFCM level x phase factor (route B, level = last year's average day x (1 + growth / 100)), or normal day x phase uplift (route C). Weekday level = phase average x days in phase / (weekdays + weekend factor x weekend days); weekend level = weekday level x weekend factor.
+   - Times any single-day multiplier. Round half up.
+2. **Hours needed** = forecast x minutes / 60, one decimal.
+3. **Hours available** = shift hours of everyone working x share answering / 100, one decimal.
+4. **Carried in** = yesterday's "left at end of day" (0 on the first day). **Left at end of day** = hours needed + carried in - hours available, if positive.
+5. **Draft roster:** follow the fill rule in `references/roster-template.md`.
+6. **Runs:** count each person's consecutive working days; flag runs over the limit.
+7. **Bill for a month** = plan price + (units over the cap / block size, rounded up) x block price + AI meter (AI price + resolutions over its cap x price per resolution, where resolutions = volume x AI share / 100, rounded half up). If AI resolutions are not also tickets, take them out of the ticket volume first. If the window covers only part of a month and the merchant gave no volume for the rest, say the bill is a lower bound.
 
 ## Report
 
 In this order:
 
-1. **Assumptions table**, every row labelled. Put merchant-chosen estimates first; they are the ones to revisit.
-2. **Gap days**, sorted by gap hours, largest first. This is the list of work to do.
-3. **Roster** in the layout in `references/roster-template.md`: one row per day, names on shift, hours, gap. Weekends are shown, not folded in.
-4. **Uncovered hours of the day.** List them as the script prints them (for example "00:00 to 09:00, 20:00 to 24:00"). Say that these hours are not covered by anyone on the roster and stop there. Deciding who or what answers after hours is not part of this skill; the kit's Peak Season Readiness Audit covers it.
-5. **Helpdesk bill per month**, with the lower-bound note where it applies.
-6. **The three ways to close a gap**, stated plainly so the merchant chooses: move or extend shifts, add a person (with the dates they are needed), or reduce volume through clearer policy and delivery pages before the sale. Do not choose for them.
+1. **Assumptions table**, merchant-chosen estimates first.
+2. **Days that need extra help**, most hours first, after the draft. This is the list of work to do.
+3. **Roster** in the layout in `references/roster-template.md`: one row per day, names on shift with added shifts marked, hours, gap, backlog. Weekends shown.
+4. **Before and after the draft**, and the per person view with every `[DECISION NEEDED]` run flag.
+5. **Uncovered hours of the day**, and with an hourly share the messages that arrive in them. List them and stop. Who or what answers after hours is not part of this skill; the kit's Peak Season Readiness Audit covers it.
+6. **Helpdesk bill per month**, with the lower-bound note where it applies.
+7. **Scenarios**, when the volume level is a merchant-chosen estimate, labelled as what-ifs.
+8. **The three ways to close what is left**, stated plainly so the merchant chooses: move or extend shifts, add a person (with the dates they are needed), or reduce volume through clearer policy and delivery pages before the sale. Do not choose for them.
 
 End with the open `[DECISION NEEDED]` items, if any.
 
 ## What this does not do
 
-It does not compare helpdesk vendors or plans, and it does not recommend switching. If the merchant asks which helpdesk is cheaper, say that is outside this plan and use only the prices they gave you. It does not decide who covers after hours. It does not predict sales. It does not read the merchant's helpdesk; every number comes from them.
+It does not compare helpdesk vendors or plans, and it does not recommend switching. It does not decide who covers after hours. It does not predict sales; the uplift is the merchant's. It does not read the merchant's helpdesk; every number comes from them. It does not move a regular shift, cancel a day off or add a person the merchant did not name; the draft only uses extra days people offered. Hours needed assume a person handles every forecast message; if the merchant expects an AI to resolve a share, they can lower the forecast themselves and say so in the assumptions.

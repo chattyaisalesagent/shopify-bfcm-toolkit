@@ -1,105 +1,120 @@
 # The nine lines
 
-Lines 1 to 6 are verbatim from the readiness scorecard in the peak-season research (Chatty, "Before BFCM 2026", page 19). Each line scores Ready (2 points), Partial (1 point) or Missing (0 points). Lines 7, 8 and 9 are additions, scored the same way but kept out of the 0 to 12 total so that total stays comparable to the published bands.
+Lines 1 to 6 follow the six-line scorecard in Chatty's "Before BFCM 2026" report. Two changes make it work for every store: line 3 counts Shopify's own Order status page, not only order lookup in a chat, and lines 3, 5 and 6 can be Not applicable when the store does not have the thing the line checks. Lines 5 and 6 also accept a first-season store's forecast in place of last year's numbers.
 
-Before scoring any line, the audit asks what broke last peak season (see the skill body). Nothing on that list is a score by itself; it ranks the fixes and challenges self-reports.
+Each line scores Ready (2 points), Partial (1 point) or Missing (0 points). "Not applicable: <reason>" is allowed only on lines 3, 5 and 6, only when the condition below is true from what the merchant said. "Not scored: <what is missing>" is for a line that applies but cannot be judged.
+
+Lines 7, 8 and 9 are additions, scored the same way but kept out of the score.
+
+Before scoring, the audit asks what broke last peak season and how the store's support is set up (see the skill body).
 
 ## 1. Discount rules
 
-- **Ready (2):** Written down and readable by the assistant handling shopper questions.
-- **Partial (1):** Written but not loaded anywhere the assistant or staff can reach it.
+- **Ready (2):** Terms written (stacking, minimum spend, start and end with timezone, exclusions) where whoever replies to shoppers can read them: staff, saved replies, any assistant.
+- **Partial (1):** Written but out of their reach, or worded differently in different places.
 - **Missing (0):** Only in the head of whoever runs the promotion.
 
-**How to check.** Ask for the current or planned sale terms text. If a connector is available, `search_products` or a discount lookup can confirm a code exists, but existence of a code is not the same as the terms being written down; the terms text itself is what this line scores. If the same terms appear in several places (banner, FAQ, email) and they disagree, the line is at most Partial. Route per `references/routing.md`.
+**How to check.** Ask for the sale terms text. With a connector, `graphql_query` can read how a discount is set up (whether it combines with product, order or shipping discounts, minimum, dates), but a code existing is not the same as the terms being written; the text is what this line scores. If the terms appear in several places and disagree, the line is at most Partial.
 
 ## 2. Order-by dates per region
 
 - **Ready (2):** Published for every region the store sells to.
-- **Partial (1):** One general date only, not broken out by region.
-- **Missing (0):** Not published anywhere.
+- **Partial (1):** One general date, or dates for only some of the regions the store sells to.
+- **Missing (0):** Not published.
 
-**How to check.** Ask for the published cutoff text, or find it on the site. Route per `references/routing.md`.
+**How to check.** Ask for the published cutoff text, or find it on the site.
 
-## 3. Automated order lookup
+## 3. Self-serve order status
 
-- **Ready (2):** Shoppers can self-serve, tested on a real order.
-- **Partial (1):** The feature exists but has not been tested end to end.
-- **Missing (0):** Every lookup still needs a person.
+Shopify gives every store an Order status page. Order confirmation emails can link to it, and once a tracking number is added at fulfilment, shoppers can follow the parcel there, in shipping notification emails and in the Shop app. Shoppers without an account can reach it with the order number plus their email or phone. Shopify Inbox also has a "Track my order" instant answer, on by default (Sales channels, Inbox, Chat settings, Instant answers). Sources: help.shopify.com/en/manual/fulfillment/setup/order-status-page/order-tracking, .../understanding-order-status-pages, help.shopify.com/en/manual/inbox/chat-settings-and-appearance/instant-answers (checked 24 September 2026).
 
-**How to check.** Ask whether order lookup is switched on in the chat app or helpdesk the store uses, and whether anyone has tested it on a real order recently. If a connector is available, `get-order` or `list-orders` confirm the underlying data is reachable, but do not confirm the shopper-facing self-serve path works; ask separately. This is set up inside the chat app, not in this kit. Route per `references/routing.md`.
+- **Ready (2):** Orders ship with a tracking number, so the Order status page and shipping emails show tracking; if the store has a chat, its order lookup works too; tested on a real order this season.
+- **Partial (1):** The Order status page works, but some orders ship without tracking, or nobody has tested it, or the chat's order lookup is off or untested.
+- **Missing (0):** No tracking; every "where is my order" needs a person.
+- **Not applicable:** The store ships nothing (digital products or services only).
+
+**How to check.** Ask whether every order gets a tracking number at fulfilment, whether anyone has opened the shipping email link on a real order this season, and whether any chat on the store has order lookup switched on and tested. With a connector, `get-order` shows fulfilment and tracking on a real order; it does not prove the shopper-facing path was tested, so ask separately. This is set up in Shopify and the chat app, not in a kit tool.
 
 ## 4. Handoff to a person
 
-- **Ready (2):** Rules, a summary, and someone with the authority to act.
-- **Partial (1):** Handoff happens but the person receiving it has no context.
-- **Missing (0):** No rules for when or how a handoff happens.
+- **Ready (2):** Rules for when a conversation goes to a person; that person sees the conversation so far and can approve refunds and address changes, or knows who can. If no bot replies and one person handles every conversation, Ready when that person can make those decisions.
+- **Partial (1):** Handoff happens but the person has no context or no authority.
+- **Missing (0):** No rules for when or how.
 
-**How to check.** Ask who receives an escalated conversation, whether they get a summary or just a raw transcript, and whether that person can actually approve exceptions (refunds, address changes) or has to escalate again. The mechanics live in the chat app; the authority (who may decide what) is a written decision. Route per `references/routing.md`.
+**How to check.** Ask who receives an escalated conversation, whether they see the history, and whether they can approve exceptions or must pass it on again. The mechanics live in the chat or helpdesk app; the authority is a written decision.
 
-## 5. Weekly review
+## 5. Weekly review of questions the assistant could not answer
 
-- **Ready (2):** Run for at least two consecutive weeks already.
-- **Partial (1):** Done occasionally, not on a cadence.
-- **Missing (0):** The list of unanswered messages has never been opened.
+- **Ready (2):** On a fixed weekday with a named owner, done at least twice already, or every week since the assistant went live if that was less than two weeks ago.
+- **Partial (1):** Done now and then, not on a schedule.
+- **Missing (0):** The list has never been opened.
+- **Not applicable:** No AI assistant or bot replies to shoppers on its own; people handle every conversation. Fixed FAQ buttons such as Shopify Inbox instant answers do not count as an assistant. If Shopify Inbox's AI agent is switched on, the line applies.
 
-**How to check.** Ask when the store last reviewed its unanswered or fallback message list, and whether it happens on a schedule. The list lives in the chat app. Route per `references/routing.md`.
+**How to check.** Ask whether any assistant replies without a person, and if so when its list of unanswered or passed-on conversations was last opened.
 
 ## 6. Plan cap and overage
 
-- **Ready (2):** Compared against last year's BFCM week volume.
-- **Partial (1):** The cap is known but has not been compared against expected load.
-- **Missing (0):** The overage price is not known at all.
+- **Ready (2):** The allowance has been compared with expected peak volume, either last year's BFCM week or, for a first season or a store that has changed a lot, a written forecast: from `peak-load-cover-planner` or the merchant's own method with the working shown.
+- **Partial (1):** The cap is known but not compared with expected volume.
+- **Missing (0):** The overage price, or what happens at the cap, is not known.
+- **Not applicable:** No support tool the store uses has a usage cap or a usage charge: for example Shopify Inbox (listed as free on the Shopify App Store, apps.shopify.com/inbox, checked 24 September 2026) or a plain email inbox. If any tool charges per ticket, conversation, message or resolution, or stops at a limit, the line applies.
 
-**How to check.** Ask what plan or tier the store's support or AI system is on, what the included allowance is, and what happens at the cap. No API reliably exposes this across vendors. Route per `references/routing.md`, which covers both the load comparison and the question list for the vendor.
+**How to check.** Ask what each support tool charges and whether it has a limit. No API exposes this across vendors.
 
 ---
 
-## 7. Holiday returns and exchange policy (added, reported separately)
+## 7. Holiday returns and exchange policy (reported separately)
 
-Added because it traces to its own finding in the research (stock and returns questions peak after the holiday, and returns is the subject stores are least often ready to answer even outside the holiday).
+- **Ready (2):** The holiday return window, who pays return shipping, and what a gift recipient without a receipt can do are all written down.
+- **Partial (1):** Some decided, or decided but not published where shoppers and staff can see it.
+- **Missing (0):** None decided.
 
-- **Ready (2):** The holiday returns window, who pays return shipping, and the gift-without-receipt case are all written down.
-- **Partial (1):** Some of these are decided but not all, or decided but not published anywhere a shopper or a staff member can see them.
-- **Missing (0):** None of this has been decided.
+**How to check.** Ask for the returns policy text and whether it says anything about the holiday period.
 
-**How to check.** Ask for the current returns policy text and whether it says anything specific about the holiday period. Route per `references/routing.md`.
+## 8. Proactive late-delivery notices (reported separately)
 
-## 8. Proactive late-delivery notices (added, reported separately)
+Shopify's shipping notifications are shipping confirmation, shipping update, out for delivery and delivered. There is no delayed-delivery notification (help.shopify.com/en/manual/fulfillment/setup/notifications/customer-notifications, checked 24 September 2026).
 
-Shopify's built-in notifications include shipping update and delivered, but no delayed-delivery message. A store that has nothing prepared learns about a late order when the shopper writes in.
+- **Ready (2):** Written "running late" and "will not arrive in time" messages that state what the store offers, and a named person or routine finds late orders on a schedule.
+- **Partial (1):** Only one of those two halves.
+- **Missing (0):** Late orders are found when the shopper complains.
 
-- **Ready (2):** Written messages exist for both "running late" and "will not arrive in time", with what the store offers stated, **and** a named person or a set routine finds late orders (past the promised date, tracking not moving) on a schedule so the message goes out before the shopper asks.
-- **Partial (1):** One of the two halves only: messages are written but nobody is assigned to spot late orders, or someone watches for late orders but the messages would be written on the day.
-- **Missing (0):** Late orders are discovered when the shopper complains.
+**How to check.** Ask for the message text, and who checks shipped orders for delays, how often, using what.
 
-**How to check.** Ask the merchant to paste the late-delivery message text, and ask who checks shipped orders for delays, how often, and using what. A described but unpasted message is self-reported. Route per `references/routing.md`.
+## 9. Contingency plan (reported separately)
 
-## 9. Contingency plan (added, reported separately)
+Carrier delay, stock-out mid-sale, volume above forecast.
 
-Three situations that recur every peak season: the carrier is delayed, a product sells out mid-sale, and message volume runs above forecast.
+- **Ready (2):** Written for all three, each naming who decides, what shoppers are told, and what staff may offer without asking.
+- **Partial (1):** One or two covered, or all three only agreed verbally.
+- **Missing (0):** None thought through.
 
-- **Ready (2):** A written plan exists for all three, and each names who decides, what shoppers are told, and what staff may offer without asking (for example the maximum goodwill credit).
-- **Partial (1):** One or two of the three are covered, or all three are agreed verbally but nothing is written that a seasonal hire could follow.
-- **Missing (0):** None of the three has been thought through.
-
-**How to check.** Ask for the plan text, or for each situation ask "what happens the day this happens, and who decides". Score only from what they show or say; do not fill in a plan. Route per `references/routing.md`.
+**How to check.** Ask for the plan text, or for each situation "what happens that day, and who decides". Do not fill in a plan.
 
 ---
 
 ## Scoring
 
-Sum lines 1 to 6 only, 0 to 12.
+Score = points from lines 1 to 6 that were scored and apply, out of 2 x the number of those lines. Show "x out of y (z%)".
 
-| Total | Band | Meaning |
+| Score | Band | Meaning |
 |---|---|---|
-| 10 to 12 | Ready | What remains is keeping the weekly review going |
-| 6 to 9 | Foundations exist | Untested under load. Start with the lines scored Partial |
-| Below 6 | Start here | Start with two lines scored Missing, prioritised by which deadline in the season is nearest |
+| 83% or more (10 to 12 of 12) | Ready | Keep it that way; keep the weekly review going if line 5 applies |
+| 50% to 82% (6 to 9 of 12) | Foundations exist | Set up but untested under load |
+| Below 50% (0 to 5 of 12) | Start here | Basics are missing |
 
-Report lines 7, 8 and 9 alongside the total, not folded into it: "6-line score: 8/12 (Foundations exist). Returns policy: Partial. Late-delivery notices: Missing. Contingency plan: Partial."
+With all six lines applying, these are exactly the report's 10 to 12, 6 to 9 and below 6 bands. With lines dropped, possible totals are out of 6, 8 or 10, and none lands between 82% and 83%, so there is no rounding edge case. Examples: 7 out of 8 is 87.5% (Ready); 5 out of 6 is 83.3% (Ready); 8 out of 10 is 80% (Foundations exist); 3 out of 6 is 50% (Foundations exist).
 
-A line you could not judge is reported as "Not scored: <what is missing>", never given a level. If any of lines 1 to 6 is unscored, report the total as "x/12 from the lines scored, n lines not scored" rather than a band.
+The bands are Chatty's own rubric, not an industry benchmark. The report says so.
+
+If an applicable line of 1 to 6 is Not scored, report "x out of y from the lines scored, n not scored" and give no band.
+
+Report lines 7, 8 and 9 next to the score: "Score: 7 out of 8 (87.5%), Ready. Returns policy: Partial. Late-delivery notices: Missing. Contingency plan: Partial."
+
+## Ranking the fixes
+
+Across all nine lines: critical lines (3, 4, 6) that are Missing first, then lines tied to what broke last season, then Missing before Partial, then critical lines before the rest, then the nearest deadline. The top three are "Fix these three first".
 
 ## The critical-line override
 
-Lines 3, 4 and 6 (order lookup, handoff, plan cap) outrank the total. If any of the three is Missing, say so first, before the total, regardless of what the total is. A store can score 10/12 and still be one plan-cap surprise away from the AI going silent in the busiest week.
+Lines 3, 4 and 6 outrank the score. If any is Missing, say so first, whatever the score. A store can score 10 out of 12 and still be one plan-cap surprise away from its assistant going silent in the busiest week. Not applicable never triggers this.

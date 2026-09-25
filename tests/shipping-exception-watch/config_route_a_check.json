@@ -1,0 +1,14 @@
+{
+  "today": "2026-12-08",
+  "stall_days": null,
+  "promise": {
+    "source": "rule",
+    "business_days": { "by_zone": { "US": 5, "CA": 8, "GB": 10 } },
+    "non_working_weekdays": [5, 6],
+    "holidays": ["2026-11-26"]
+  },
+  "ship_from_country": "US",
+  "normal_transit_days": { "by_zone": { "US": 5, "CA": 8, "GB": 10 } },
+  "no_scan_days": 3,
+  "contacted_orders": ["#3115"]
+}

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Package the BFCM Support Kit for chatty.net/bfcm-2026/kit.
 #
+#   0. Checks every prompt fits in one chat message (check-prompt-length.py).
 #   1. Copies prompts/<slug>.md into the site, where the kit page reads
 #      them at build time.
 #   2. Builds one zip per skill with the skill folder at the zip root
@@ -26,6 +27,13 @@ SLUGS=(
   peak-season-playbook
   shipping-exception-watch
 )
+
+# Every copy-paste prompt must fit in one chat message. Stop before touching
+# the site if any is too long (limit and sources in check-prompt-length.py).
+python3 "$REPO/scripts/check-prompt-length.py" "${SLUGS[@]}" || {
+  echo "package-kit: fix the prompt length above, nothing was packaged." >&2
+  exit 1
+}
 
 mkdir -p "$PROMPT_OUT" "$ZIP_OUT"
 rm -f "$ZIP_OUT"/*.zip

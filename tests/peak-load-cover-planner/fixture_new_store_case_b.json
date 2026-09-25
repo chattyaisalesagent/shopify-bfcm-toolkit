@@ -1,0 +1,76 @@
+{
+ "store_timezone": "America/New_York",
+ "dates": {
+  "black_friday": "2026-11-27",
+  "cyber_monday": "2026-11-30",
+  "holiday": "2026-12-25",
+  "end_date": "2027-01-15"
+ },
+ "baseline": {
+  "method": "new_store",
+  "normal_messages_per_week": {
+   "value": 126,
+   "source": "merchant-stated"
+  }
+ },
+ "phase_uplift": {
+  "value": {
+   "pre_sale": 1.0,
+   "bfcm_week": 3.0,
+   "december": 1.5,
+   "returns": 1.2
+  },
+  "source": "merchant-chosen estimate"
+ },
+ "weekend_factor": {
+  "value": 1.0,
+  "source": "merchant-stated"
+ },
+ "scenarios": {
+  "value": [
+   1.5,
+   2
+  ],
+  "source": "merchant-chosen estimate"
+ },
+ "minutes_per_conversation": {
+  "value": 6,
+  "source": "merchant-chosen estimate"
+ },
+ "share_of_shift_answering_pct": {
+  "value": 60,
+  "source": "merchant-chosen estimate"
+ },
+ "hourly_share_pct": {
+  "value": {
+   "8": 5,
+   "9": 10,
+   "10": 10,
+   "11": 10,
+   "12": 10,
+   "13": 10,
+   "14": 10,
+   "15": 10,
+   "16": 10,
+   "17": 5,
+   "18": 5,
+   "19": 5
+  },
+  "source": "merchant-stated"
+ },
+ "team": [
+  {
+   "name": "Owner",
+   "weekday_shift": "09:00-17:00",
+   "weekend_shift": "10:00-12:00"
+  }
+ ],
+ "helpdesk": {
+  "billing_unit": "conversations",
+  "plan_price_per_month": 29,
+  "included_per_month": 1000,
+  "overage_block_size": 1,
+  "overage_price_per_block": 0.1,
+  "source": "merchant-stated"
+ }
+}

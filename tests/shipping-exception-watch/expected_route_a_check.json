@@ -1,0 +1,72 @@
+{
+  "_comment": "Route (a) with the check_tracking rules on: a Shopify export trimmed to Name, Fulfillment Status, Fulfilled at, Shipping Method, Shipping Country plus the added Delivery Status column. US store (ship_from_country US) shipping to US, CA and GB. Today 2026-12-08 (Tuesday). Promise = Fulfilled at + US 5 / CA 8 / GB 10 business days, weekends and 2026-11-26 closed. Merchant says orders normally arrive within US 5 / CA 8 / GB 10 calendar days, and Tracking added or No status for more than 3 days after Fulfilled at is suspicious. Hand-checked.",
+  "data_source": "shopify_delivery_status",
+  "skipped": ["customs_hold", "tracking_stalled"],
+  "groups": {
+    "#3101": "past_promised_date",
+    "#3102": "delivery_problem",
+    "#3103": "delivery_problem",
+    "#3104": "delivery_problem",
+    "#3105": "check_tracking",
+    "#3106": "on_track",
+    "#3107": "check_tracking",
+    "#3108": "on_track",
+    "#3109": "check_tracking",
+    "#3110": "check_tracking",
+    "#3111": "on_track",
+    "#3112": "past_promised_date",
+    "#3113": "check_tracking",
+    "#3114": "on_track",
+    "#3115": "delivered_but_contacted",
+    "#3116": "on_track",
+    "#3117": "delivery_problem",
+    "#3118": "on_track",
+    "#3119": "check_tracking",
+    "#3120": "past_promised_date"
+  },
+  "days_late": { "#3112": 7, "#3101": 6, "#3120": 5 },
+  "days_stalled": {},
+  "flags": {
+    "#3112": ["possible_stall", "possible_customs_hold"],
+    "#3101": ["possible_stall"],
+    "#3120": ["possible_stall", "possible_not_scanned"],
+    "#3103": [],
+    "#3104": ["possible_customs_hold"],
+    "#3110": [],
+    "#3109": []
+  },
+  "check_reasons": {
+    "#3110": ["possible_stall", "possible_customs_hold"],
+    "#3109": ["possible_stall", "possible_customs_hold"],
+    "#3105": ["possible_stall"],
+    "#3119": ["possible_not_scanned"],
+    "#3113": ["possible_not_scanned"],
+    "#3107": ["possible_not_scanned"]
+  },
+  "urgency_order": [
+    "#3112", "#3101", "#3120",
+    "#3117", "#3103", "#3102", "#3104",
+    "#3110", "#3109", "#3105", "#3119", "#3113", "#3107",
+    "#3115"
+  ],
+  "contacted_but_on_track": [],
+  "contacted_orders_not_in_file": [],
+  "privacy_needles": [],
+  "why": {
+    "#3101": "US, fulfilled 11-24, promised 12-02 (11-26 skipped); In transit, 6 days late. Late wins over any candidate rule",
+    "#3103": "US (domestic) Delayed, promised 12-09: delivery_problem, and NOT a customs candidate because it is not international",
+    "#3104": "CA Delayed, promised 12-11: delivery_problem wins over check_tracking; possible_customs_hold is a flag so the merchant checks tracking before choosing the Delivery problem or Held at customs message",
+    "#3105": "US In transit, fulfilled 6 days ago > normal 5, promised 12-09 not late: possible stall",
+    "#3106": "US In transit, fulfilled exactly 5 days ago = normal 5, not more: on track",
+    "#3107": "US Tracking added 4 days after Fulfilled at > 3: possible_not_scanned (4 is not > 5, so no possible_stall)",
+    "#3108": "US Tracking added exactly 3 days: on track",
+    "#3109": "CA In transit, fulfilled 11-27 = 11 days > normal 8, promised 12-09 not late: possible stall and possible customs hold, one group",
+    "#3110": "GB In transit, fulfilled 11-25 = 13 days > normal 10, promised 12-10: possible stall and possible customs hold",
+    "#3111": "GB In transit 7 days <= 10: on track",
+    "#3112": "GB In transit, fulfilled 11-16, promised 12-01, 7 days late: late, with possible_customs_hold flag",
+    "#3113": "CA No status 5 days > 3: possible_not_scanned; No status is not a customs candidate",
+    "#3117": "US Attempted delivery, promised 12-08 = today, not late: delivery_problem",
+    "#3119": "GB Tracking added 6 days: possible_not_scanned only; Tracking added is not a customs candidate",
+    "#3120": "US No status, promised 12-03, 5 days late: late, not check_tracking"
+  }
+}

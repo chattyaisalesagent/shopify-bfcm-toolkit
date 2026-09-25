@@ -1,0 +1,21 @@
+Name,Fulfillment Status,Fulfilled at,Shipping Method,Shipping Country,Delivery Status
+#3101,fulfilled,2026-11-24 10:00:00 -0500,Standard Shipping,US,In transit
+#3102,fulfilled,2026-12-03 10:00:00 -0500,Standard Shipping,US,Failed delivery
+#3103,fulfilled,2026-12-02 10:00:00 -0500,Standard Shipping,US,Delayed
+#3104,fulfilled,2026-12-01 10:00:00 -0500,International Shipping,CA,Delayed
+#3105,fulfilled,2026-12-02 10:00:00 -0500,Standard Shipping,US,In transit
+#3106,fulfilled,2026-12-03 10:00:00 -0500,Standard Shipping,US,In transit
+#3107,fulfilled,2026-12-04 10:00:00 -0500,Standard Shipping,US,Tracking added
+#3108,fulfilled,2026-12-05 10:00:00 -0500,Standard Shipping,US,Tracking added
+#3109,fulfilled,2026-11-27 10:00:00 -0500,International Shipping,CA,In transit
+#3110,fulfilled,2026-11-25 10:00:00 -0500,International Shipping,GB,In transit
+#3111,fulfilled,2026-12-01 10:00:00 -0500,International Shipping,GB,In transit
+#3112,fulfilled,2026-11-16 10:00:00 -0500,International Shipping,GB,In transit
+#3113,fulfilled,2026-12-03 10:00:00 -0500,International Shipping,CA,No status
+#3114,fulfilled,2026-12-07 10:00:00 -0500,Standard Shipping,US,Out for delivery
+#3115,fulfilled,2026-11-30 10:00:00 -0500,Standard Shipping,US,Delivered
+#3116,fulfilled,2026-12-01 10:00:00 -0500,Standard Shipping,US,Delivered
+#3117,fulfilled,2026-12-01 10:00:00 -0500,Standard Shipping,US,Attempted delivery
+#3118,fulfilled,2026-12-04 10:00:00 -0500,International Shipping,CA,In transit
+#3119,fulfilled,2026-12-02 10:00:00 -0500,International Shipping,GB,Tracking added
+#3120,fulfilled,2026-11-25 10:00:00 -0500,Standard Shipping,US,No status

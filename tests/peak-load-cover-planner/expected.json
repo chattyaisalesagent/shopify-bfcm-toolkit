@@ -1,21 +1,115 @@
 {
-  "_how_these_were_computed": "By hand, independently of plan.py. Level = 800 x 25/100 x 1.10 = 220 per day. Forecast = 220 x phase factor x 0.9 on Sat/Sun x any day override, rounded half up. Hours needed = forecast x 6 / 60. Hours available = sum of shift lengths of people on shift x 0.75.",
-  "window": {"start": "2026-11-20", "end": "2027-01-15", "days": 57},
-  "this_year_bfcm_level_per_day": 220,
-  "days": {
-    "2026-11-20": {"forecast": 110, "required": 11.0, "available": 12.0, "gap": 0.0, "on_shift": ["Anna", "Ben"]},
-    "2026-11-26": {"forecast": 110, "required": 11.0, "available": 9.0, "gap": 2.0, "on_shift": ["Anna", "Cara (seasonal)"]},
-    "2026-11-27": {"forecast": 220, "required": 22.0, "available": 15.0, "gap": 7.0, "uncovered": ["00:00-09:00", "20:00-24:00"]},
-    "2026-11-28": {"forecast": 198, "required": 19.8, "available": 6.0, "gap": 13.8, "on_shift": ["Anna", "Cara (seasonal)"]},
-    "2026-12-25": {"forecast": 88, "required": 8.8, "available": 9.0, "gap": 0.0},
-    "2026-12-26": {"forecast": 119, "required": 11.9, "available": 6.0, "gap": 5.9},
-    "2027-01-02": {"forecast": 79, "required": 7.9, "available": 3.0, "gap": 4.9, "on_shift": ["Anna"]}
+ "_how_these_were_computed": "By hand, independently of plan.py. Level = 800 x 25/100 x 1.10 = 220 per average BFCM-week day. Each phase average (220 x factor) is split so the phase total stays the same: weekday = average x days / (weekdays + 0.9 x weekend days), weekend = weekday x 0.9. Pre-sale and BFCM week have 5 weekdays and 2 weekend days: pre-sale 110 x 7 / 6.8 = 113.24 -> 113, weekend 101.91 -> 102; BFCM 220 x 7 / 6.8 = 226.47 -> 226, weekend 203.82 -> 204. December (4 to 24 Dec) has 15 weekdays and 6 weekend days: 132 x 21 / 20.4 = 135.88 -> 136, weekend 122.29 -> 122. Returns (25 Dec to 15 Jan) has 16 weekdays and 6 weekend days: 88 x 22 / 21.4 = 90.47 -> 90, weekend 81.42 -> 81; 26 Dec x 1.5 = 122.13 -> 122. Hours needed = forecast x 6 / 60. Hours available = shift hours x 0.75. Backlog carried to the next day: 20 Nov clear (11.3 vs 12.0); 21 Nov Sat 10.2 - 3.0 = 7.2; 22 Nov 10.2 + 7.2 - 3.0 = 14.4; 23 Nov 11.3 + 14.4 - 15.0 = 10.7; 24 Nov 11.3 + 10.7 - 15.0 = 7.0; 25 Nov 11.3 + 7.0 - 15.0 = 3.3; 26 Nov 11.3 + 3.3 - 9.0 = 5.6; 27 Nov 22.6 + 5.6 - 15.0 = 13.2; 28 Nov 20.4 + 13.2 - 6.0 = 27.6.",
+ "window": {
+  "start": "2026-11-20",
+  "end": "2027-01-15",
+  "days": 57
+ },
+ "days": {
+  "2026-11-20": {
+   "forecast": 113,
+   "required": 11.3,
+   "available": 12.0,
+   "gap": 0.0,
+   "on_shift": [
+    "Anna",
+    "Ben"
+   ]
   },
-  "phase_totals": {"pre_sale": 748, "bfcm_week": 1496, "december": 2694, "returns": 1922},
-  "cost": {
-    "2026-11": {"total_volume": 3084, "overage_blocks": 1, "estimated_bill": 340, "lower_bound_only": false},
-    "2026-12": {"total_volume": 3992, "overage_blocks": 10, "estimated_bill": 700, "lower_bound_only": false},
-    "2027-01": {"total_volume": 1284, "overage_blocks": 0, "estimated_bill": 300, "lower_bound_only": true},
-    "total_estimated_bill": 1340
+  "2026-11-26": {
+   "forecast": 113,
+   "required": 11.3,
+   "available": 9.0,
+   "gap": 2.3,
+   "on_shift": [
+    "Anna",
+    "Cara (seasonal)"
+   ],
+   "backlog_end": 5.6
+  },
+  "2026-11-27": {
+   "forecast": 226,
+   "required": 22.6,
+   "available": 15.0,
+   "gap": 7.6,
+   "uncovered": [
+    "00:00-09:00",
+    "20:00-24:00"
+   ],
+   "backlog_end": 13.2
+  },
+  "2026-11-28": {
+   "forecast": 204,
+   "required": 20.4,
+   "available": 6.0,
+   "gap": 14.4,
+   "on_shift": [
+    "Anna",
+    "Cara (seasonal)"
+   ],
+   "backlog_end": 27.6
+  },
+  "2026-12-25": {
+   "forecast": 90,
+   "required": 9.0,
+   "available": 9.0,
+   "gap": 0.0
+  },
+  "2026-12-26": {
+   "forecast": 122,
+   "required": 12.2,
+   "available": 6.0,
+   "gap": 6.2
+  },
+  "2027-01-02": {
+   "forecast": 81,
+   "required": 8.1,
+   "available": 3.0,
+   "gap": 5.1,
+   "on_shift": [
+    "Anna"
+   ]
+  },
+  "2026-11-21": {
+   "forecast": 102,
+   "required": 10.2,
+   "available": 3.0,
+   "gap": 7.2,
+   "backlog_end": 7.2
+  },
+  "2026-11-23": {
+   "forecast": 113,
+   "required": 11.3,
+   "available": 15.0,
+   "gap": 0.0,
+   "backlog_end": 10.7
   }
+ },
+ "phase_totals": {
+  "pre_sale": 769,
+  "bfcm_week": 1538,
+  "december": 2772,
+  "returns": 1967
+ },
+ "cost": {
+  "2026-11": {
+   "total_volume": 3129,
+   "overage_blocks": 2,
+   "estimated_bill": 380,
+   "lower_bound_only": false
+  },
+  "2026-12": {
+   "total_volume": 4103,
+   "overage_blocks": 12,
+   "estimated_bill": 780,
+   "lower_bound_only": false
+  },
+  "2027-01": {
+   "total_volume": 1314,
+   "overage_blocks": 0,
+   "estimated_bill": 300,
+   "lower_bound_only": true
+  },
+  "total_estimated_bill": 1460
+ }
 }

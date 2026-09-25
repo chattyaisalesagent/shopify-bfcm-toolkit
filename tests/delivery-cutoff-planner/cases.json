@@ -1,0 +1,551 @@
+{
+  "_about": "Every expected date below was counted by hand on a 2026 calendar (1 Nov 2026 is a Sunday, 26 Nov is Thanksgiving, 25 Dec is a Friday) before the script was run. The hand count for each case is in its 'working' field.",
+  "valid": [
+    {
+      "id": "A-basic-sat-carrier",
+      "working": "Day 0 Thu 24 Dec (carrier runs). Transit 3 carrier days: Wed 23, Tue 22, Mon 21, ship Mon 21 (warehouse open). Processing 2 warehouse days: Fri 18, Thu 17 = order day. Buffer 1: Wed 16.",
+      "today": "2026-09-24",
+      "input": {
+        "target_arrival": "2026-12-24",
+        "warehouse": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ],
+          "order_cutoff_time": "14:00",
+          "timezone": "ET"
+        },
+        "carrier": {
+          "closed_weekdays": [
+            "Sun"
+          ]
+        },
+        "zones": [
+          {
+            "name": "US",
+            "transit_days": 3,
+            "processing_days": 2,
+            "buffer_days": 1
+          }
+        ]
+      },
+      "expect": [
+        {
+          "zone": "US",
+          "cutoff_date": "2026-12-16",
+          "delivery_day": "2026-12-24",
+          "ship_day": "2026-12-21",
+          "feasible": true,
+          "days_until_cutoff": 83,
+          "publishable_line": "Order by 2 pm ET, Wed 16 Dec for delivery to US by Thu 24 Dec."
+        }
+      ]
+    },
+    {
+      "id": "B-holiday-target",
+      "working": "Target Fri 25 Dec, carrier does not deliver 25 Dec, so day 0 is Thu 24. Transit 2: Wed 23, Tue 22, ship Tue 22. Processing 1: Mon 21 = order day. Buffer 0: cutoff Mon 21. The old rule (start the day before the target, count 3 working days) gave Tue 22, one day too late.",
+      "today": "2026-09-24",
+      "input": {
+        "target_arrival": "2026-12-25",
+        "warehouse": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ],
+          "closed_dates": [
+            "2026-12-25"
+          ]
+        },
+        "carrier": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ],
+          "closed_dates": [
+            "2026-12-25"
+          ]
+        },
+        "zones": [
+          {
+            "name": "Domestic",
+            "transit_days": 2,
+            "processing_days": 1,
+            "buffer_days": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "zone": "Domestic",
+          "cutoff_date": "2026-12-21",
+          "delivery_day": "2026-12-24",
+          "ship_day": "2026-12-22",
+          "feasible": true,
+          "publishable_line": "Order by Mon 21 Dec for delivery to Domestic by Fri 25 Dec."
+        }
+      ]
+    },
+    {
+      "id": "C-range-and-thanksgiving",
+      "working": "Day 0 Fri 4 Dec. Transit '5-8' uses 8 carrier days: Thu 3, Wed 2, Tue 1, Mon 30 Nov, (Sun 29, Sat 28 skipped), Fri 27, (Thu 26 closed), Wed 25, Tue 24, Mon 23 = ship day. Processing 2: Fri 20, Thu 19. Buffer 1: Wed 18 Nov.",
+      "today": "2026-09-24",
+      "input": {
+        "target_arrival": "2026-12-04",
+        "warehouse": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ],
+          "closed_dates": [
+            "2026-11-26"
+          ]
+        },
+        "carrier": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ],
+          "closed_dates": [
+            "2026-11-26"
+          ]
+        },
+        "zones": [
+          {
+            "name": "EU",
+            "transit_days": "5-8",
+            "processing_days": 2,
+            "buffer_days": 1
+          }
+        ]
+      },
+      "expect": [
+        {
+          "zone": "EU",
+          "cutoff_date": "2026-11-18",
+          "ship_day": "2026-11-23",
+          "transit_days_used": 8,
+          "used_upper_bound_of_range": true
+        }
+      ]
+    },
+    {
+      "id": "D-ship-by-date",
+      "working": "Carrier ship-by Sat 19 Dec. Warehouse closed Saturday, so ship day rolls back to Fri 18. Processing 1: Thu 17. Buffer 1: Wed 16.",
+      "today": "2026-09-24",
+      "input": {
+        "target_arrival": "2026-12-24",
+        "warehouse": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ],
+          "order_cutoff_time": "12:00",
+          "timezone": "PT"
+        },
+        "carrier": {
+          "closed_weekdays": [
+            "Sun"
+          ]
+        },
+        "zones": [
+          {
+            "name": "Ground",
+            "ship_by": "2026-12-19",
+            "processing_days": 1,
+            "buffer_days": 1
+          }
+        ]
+      },
+      "expect": [
+        {
+          "zone": "Ground",
+          "mode": "ship_by",
+          "ship_day": "2026-12-18",
+          "cutoff_date": "2026-12-16",
+          "publishable_line": "Order by 12 pm PT, Wed 16 Dec for delivery to Ground by Thu 24 Dec."
+        }
+      ]
+    },
+    {
+      "id": "E-early-close-cutoff-time",
+      "working": "Day 0 Mon 28 Dec. Transit 1: Sun 27 and Sat 26 skipped (carrier), Fri 25 skipped (closed), Thu 24 = ship day. Processing 0: order day Thu 24. Thu 24 is an early-close day at 10:00, so the cutoff is 10 am, not 2 pm.",
+      "today": "2026-09-24",
+      "input": {
+        "target_arrival": "2026-12-28",
+        "warehouse": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ],
+          "closed_dates": [
+            "2026-12-25"
+          ],
+          "order_cutoff_time": "14:00",
+          "timezone": "ET",
+          "early_close": {
+            "2026-12-24": "10:00"
+          }
+        },
+        "carrier": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ],
+          "closed_dates": [
+            "2026-12-25"
+          ]
+        },
+        "zones": [
+          {
+            "name": "Local zone",
+            "transit_days": 1,
+            "processing_days": 0,
+            "buffer_days": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "zone": "Local zone",
+          "cutoff_date": "2026-12-24",
+          "early_close_applies": true,
+          "order_cutoff_time": "10:00",
+          "publishable_line": "Order by 10 am ET, Thu 24 Dec for delivery to Local zone by Mon 28 Dec."
+        }
+      ]
+    },
+    {
+      "id": "F-carrier-saturday-warehouse-closed",
+      "working": "Day 0 Tue 22. Transit 2 on the carrier calendar (Mon-Sat): Mon 21, (Sun 20 skipped), Sat 19. Warehouse is closed Saturday so it cannot ship: roll back to Fri 18. Processing 1: Thu 17.",
+      "today": "2026-09-24",
+      "input": {
+        "target_arrival": "2026-12-22",
+        "warehouse": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ]
+        },
+        "carrier": {
+          "closed_weekdays": [
+            "Sun"
+          ]
+        },
+        "zones": [
+          {
+            "name": "Z",
+            "transit_days": 2,
+            "processing_days": 1,
+            "buffer_days": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "zone": "Z",
+          "ship_day": "2026-12-18",
+          "cutoff_date": "2026-12-17"
+        }
+      ]
+    },
+    {
+      "id": "G-saturday-delivery-target",
+      "working": "Target Sat 19 Dec, carrier delivers Saturday, so day 0 is Sat 19. Transit 2: Fri 18, Thu 17 = ship day. Processing 1 on the warehouse calendar: Wed 16. A merged Mon-Fri calendar would have moved day 0 to Fri 18 and given Tue 15.",
+      "today": "2026-09-24",
+      "input": {
+        "target_arrival": "2026-12-19",
+        "warehouse": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ]
+        },
+        "carrier": {
+          "closed_weekdays": [
+            "Sun"
+          ]
+        },
+        "zones": [
+          {
+            "name": "Z",
+            "transit_days": 2,
+            "processing_days": 1,
+            "buffer_days": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "zone": "Z",
+          "delivery_day": "2026-12-19",
+          "cutoff_date": "2026-12-16"
+        }
+      ]
+    },
+    {
+      "id": "H-existing-eval-cutoff-arithmetic",
+      "working": "Same inputs as evals/cutoff-arithmetic. Domestic: day 0 Thu 24, transit 2 to Tue 22, processing 1 to Mon 21, buffer 1 to Fri 18. International: transit 6: 23, 22, 21, 18, 17, 16 = ship Wed 16, processing 1 Tue 15, buffer 2: Mon 14, Fri 11.",
+      "today": "2026-09-21",
+      "input": {
+        "target_arrival": "2026-12-24",
+        "warehouse": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ],
+          "closed_dates": [
+            "2026-12-25"
+          ]
+        },
+        "carrier": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ],
+          "closed_dates": [
+            "2026-12-25"
+          ]
+        },
+        "zones": [
+          {
+            "name": "Domestic",
+            "transit_days": 2,
+            "processing_days": 1,
+            "buffer_days": 1
+          },
+          {
+            "name": "International",
+            "transit_days": 6,
+            "processing_days": 1,
+            "buffer_days": 2
+          }
+        ]
+      },
+      "expect": [
+        {
+          "zone": "Domestic",
+          "cutoff_date": "2026-12-18"
+        },
+        {
+          "zone": "International",
+          "cutoff_date": "2026-12-11"
+        }
+      ]
+    },
+    {
+      "id": "I-infeasible-and-missing-transit",
+      "working": "Case A inputs with today Thu 17 Dec: cutoff Wed 16 has passed, so not feasible. Second zone has no transit and no ship-by: decision needed, no date.",
+      "today": "2026-12-17",
+      "input": {
+        "target_arrival": "2026-12-24",
+        "warehouse": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ]
+        },
+        "carrier": {
+          "closed_weekdays": [
+            "Sun"
+          ]
+        },
+        "zones": [
+          {
+            "name": "US",
+            "transit_days": 3,
+            "processing_days": 2,
+            "buffer_days": 1
+          },
+          {
+            "name": "Canada",
+            "processing_days": 2,
+            "buffer_days": 1
+          }
+        ]
+      },
+      "expect": [
+        {
+          "zone": "US",
+          "cutoff_date": "2026-12-16",
+          "feasible": false
+        },
+        {
+          "zone": "Canada",
+          "status": "decision_needed",
+          "cutoff_date": null,
+          "note": "[DECISION NEEDED: confirm carrier transit time for Canada]"
+        }
+      ]
+    },
+    {
+      "id": "J-dry-run-us-eu-per-zone-carrier",
+      "working": "US (carrier Mon-Sat, transit '3 to 5' uses 5): day 0 Thu 24, transit Wed 23, Tue 22, Mon 21, (Sun 20 skipped), Sat 19, Fri 18 = ship day. Processing 1: Thu 17. Buffer 1: Wed 16. EU (carrier Mon-Fri, rate '6 to 10' is slower than the rep's 8, so 10): day 0 Thu 24, transit 23, 22, 21, 18, 17, 16, 15, 14, 11, 10 = ship Thu 10. Processing 1: Wed 9. Buffer 2: Tue 8, Mon 7.",
+      "today": "2026-09-24",
+      "input": {
+        "target_arrival": "2026-12-24",
+        "warehouse": {
+          "closed_weekdays": [
+            "Sat",
+            "Sun"
+          ],
+          "closed_dates": [
+            "2026-11-26",
+            "2026-12-25"
+          ],
+          "order_cutoff_time": "13:00",
+          "timezone": "ET",
+          "early_close": {
+            "2026-12-24": "11:00"
+          }
+        },
+        "zones": [
+          {
+            "name": "US",
+            "transit_days": "3 to 5",
+            "processing_days": 1,
+            "buffer_days": 1,
+            "carrier": {
+              "closed_weekdays": [
+                "Sun"
+              ],
+              "closed_dates": [
+                "2026-12-25"
+              ]
+            }
+          },
+          {
+            "name": "EU",
+            "transit_days": "6-10",
+            "processing_days": 1,
+            "buffer_days": 2,
+            "carrier": {
+              "closed_weekdays": [
+                "Sat",
+                "Sun"
+              ],
+              "closed_dates": [
+                "2026-12-25"
+              ]
+            }
+          }
+        ]
+      },
+      "expect": [
+        {
+          "zone": "US",
+          "ship_day": "2026-12-18",
+          "cutoff_date": "2026-12-16",
+          "transit_days_used": 5,
+          "publishable_line": "Order by 1 pm ET, Wed 16 Dec for delivery to US by Thu 24 Dec."
+        },
+        {
+          "zone": "EU",
+          "ship_day": "2026-12-10",
+          "cutoff_date": "2026-12-07",
+          "transit_days_used": 10,
+          "publishable_line": "Order by 1 pm ET, Mon 7 Dec for delivery to EU by Thu 24 Dec."
+        }
+      ]
+    }
+  ],
+  "invalid": [
+    {
+      "id": "decimal-transit",
+      "error_contains": "whole number",
+      "patch": {
+        "transit_days": 2.5
+      }
+    },
+    {
+      "id": "decimal-transit-text",
+      "error_contains": "whole number",
+      "patch": {
+        "transit_days": "2.5"
+      }
+    },
+    {
+      "id": "negative-processing",
+      "error_contains": "whole number",
+      "patch": {
+        "processing_days": -1
+      }
+    },
+    {
+      "id": "boolean-transit",
+      "error_contains": "whole number",
+      "patch": {
+        "transit_days": true
+      }
+    },
+    {
+      "id": "reversed-range",
+      "error_contains": "larger number first",
+      "patch": {
+        "transit_days": "8-5"
+      }
+    },
+    {
+      "id": "missing-buffer",
+      "error_contains": "buffer_days is required",
+      "drop": "buffer_days"
+    },
+    {
+      "id": "both-transit-and-ship-by",
+      "error_contains": "not both",
+      "patch": {
+        "ship_by": "2026-12-18"
+      }
+    },
+    {
+      "id": "short-date",
+      "error_contains": "YYYY-MM-DD",
+      "top": {
+        "target_arrival": "2026-12-5"
+      }
+    },
+    {
+      "id": "impossible-date",
+      "error_contains": "not a real calendar date",
+      "top": {
+        "target_arrival": "2026-02-30"
+      }
+    },
+    {
+      "id": "legacy-merged-calendar",
+      "error_contains": "no longer accepted",
+      "top": {
+        "non_working_weekdays": [
+          5,
+          6
+        ]
+      }
+    },
+    {
+      "id": "bad-time",
+      "error_contains": "not a valid time",
+      "top_warehouse": {
+        "order_cutoff_time": "25:00"
+      }
+    },
+    {
+      "id": "all-days-closed",
+      "error_contains": "every weekday is closed",
+      "top_warehouse": {
+        "closed_weekdays": [
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri",
+          "Sat",
+          "Sun"
+        ]
+      }
+    },
+    {
+      "id": "missing-carrier-calendar",
+      "error_contains": "carrier is required",
+      "remove_top": "carrier"
+    }
+  ]
+}

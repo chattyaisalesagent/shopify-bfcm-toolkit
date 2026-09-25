@@ -1,0 +1,78 @@
+{
+ "dates": {
+  "black_friday": "2026-11-27",
+  "cyber_monday": "2026-11-30",
+  "holiday": "2026-12-04",
+  "end_date": "2026-12-05",
+  "start_date": "2026-11-25"
+ },
+ "baseline": {
+  "method": "messages",
+  "conversations_per_day": {
+   "value": 100,
+   "source": "merchant-stated"
+  }
+ },
+ "growth_pct": {
+  "value": 0,
+  "source": "merchant-stated"
+ },
+ "phase_factors": {
+  "value": {
+   "pre_sale": 1,
+   "december": 1,
+   "returns": 1
+  },
+  "source": "merchant-stated"
+ },
+ "weekend_factor": {
+  "value": 1.0,
+  "source": "merchant-stated"
+ },
+ "minutes_per_conversation": {
+  "value": 6,
+  "source": "merchant-stated"
+ },
+ "share_of_shift_answering_pct": {
+  "value": 100,
+  "source": "merchant-stated"
+ },
+ "roster_rules": {
+  "max_consecutive_days": {
+   "value": 3,
+   "source": "merchant-stated"
+  }
+ },
+ "team": [
+  {
+   "name": "Ann",
+   "weekday_shift": "09:00-17:00",
+   "weekend_shift": null,
+   "can_add_days": [
+    "Sat",
+    "Sun"
+   ],
+   "extra_shift": "10:00-18:00",
+   "max_hours_per_week": 48
+  },
+  {
+   "name": "Bo",
+   "weekday_shift": null,
+   "weekend_shift": null,
+   "can_add_days": [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+    "Sun"
+   ],
+   "extra_shift": "12:00-18:00",
+   "max_hours_per_week": 24,
+   "days_off": [
+    "2026-11-28"
+   ]
+  }
+ ]
+}

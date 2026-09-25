@@ -1,6 +1,14 @@
 # Output
 
-Up to seven parts, produced in this order. The cross-check table comes first when that mode ran. If the merchant asked only for a check, the terms may be short or absent and the findings come first.
+The work is delivered in two replies, with a decision round between them. The promise to the merchant is one clean version of their terms, ready to publish, so the final reply must not carry a placeholder on anything that blocks publication.
+
+**First reply:** the cross-check table (when two or more places were pasted), the findings, and the blocking decisions as a numbered batch.
+
+**Decision round:** the merchant answers the batch, in one reply or one question at a time. Ask again for any answer that is unclear or opens a new blocking gap. If nothing blocks, skip straight to the final reply.
+
+**Final reply:** shopper-facing terms, FAQ answers, staff decision table, replacement text for every place that changes, what Shopify does automatically versus by hand, and any non-blocking decisions left.
+
+If the merchant asked only for a check and does not want to decide yet, stop after the first reply and say which answers would unlock the final text.
 
 Write files when the environment allows it and the merchant wants them; otherwise put the same content in the reply. The shape matters more than the delivery.
 
@@ -20,7 +28,7 @@ Lead with this. One block per term, product-claim terms first, then the terms wi
 | Sale email | "Free shipping on everything this weekend" |
 
 - **Versions:** A, $75, threshold measure not stated (shipping policy). B, $50 during the sale (banner). C, $75 measured after discounts (FAQ). D, no threshold during the sale (sale email).
-- **Platform behaviour:** the threshold is measured on the discounted cart (from `platform-limits.md`, when relevant).
+- **Platform behaviour:** when the shopper gets both the discount and free shipping, the threshold is measured on the discounted cart (from `platform-limits.md`, when relevant).
 - **The merchant must pick one version**, then update: shipping policy, sale banner, FAQ, sale email.
 - `[DECISION NEEDED: pick one version of the free shipping threshold: A, B, C or D]`
 
@@ -28,7 +36,7 @@ Rules for this table:
 
 - Quote exactly. Never paraphrase a source, never tidy its wording.
 - Mark any source the merchant described rather than pasted as "(described, not pasted)".
-- Label each term Consistent, Mismatch, Incomplete or Stale.
+- Label each term Consistent, Mismatch, Incomplete or Stale. Mismatch means a shopper would get a different answer depending on where they read ("30 days of delivery" against "until January 31" is a Mismatch, not Incomplete). Incomplete means one place leaves out a condition but what it says is not wrong.
 - Never choose the version. Name the choice and the places that change.
 - For a product-claim mismatch, the line is "The merchant must confirm the true fact from supplier documentation", not "pick one", because a claim is a fact, not a preference.
 
@@ -54,9 +62,9 @@ Keep it to what is actually wrong. A finding list padded with observations burie
 
 Plain sentences, ordered the way a shopper hits the questions: what the offer is, what it applies to, what it does not, when it starts and ends with a timezone, what happens to returns, what happens if the code fails. For a post-holiday returns policy: which orders it covers, the deadline, condition rules, gifts, exchanges, who pays return shipping, how discounted items are refunded, where the money goes. For international orders: who pays duties and taxes, when they are charged, and what happens if a parcel is refused.
 
-In cross-check mode, write one version of each term for every source to use, with every unresolved mismatch left as `[DECISION NEEDED: ...]`.
+Written in the final reply, from the merchant's answers. In cross-check mode, write one version of each term for every source to use.
 
-Unknowns stay as `[DECISION NEEDED: <question>]` inside the text. Never a plausible placeholder, because a plausible placeholder gets published.
+No blocking item may remain as `[DECISION NEEDED: ...]` here; if one is still open, go back to the decision round instead of printing. A non-blocking gap is left out of the text and listed in part 7, never filled with a plausible placeholder, because a plausible placeholder gets published.
 
 No marketing language. This text exists to be quoted back at the store, so it should read like something the store is prepared to be held to.
 
@@ -78,11 +86,14 @@ Write one for each field that was actually decided. Typical set:
 - Can I exchange for a different size instead of a refund?
 - Who pays for return shipping?
 - I bought this with a discount, how much do I get back?
-- My code did not work, what now?
+- My code did not work, what now? (Quote the checkout message exactly: Discount couldn't be used with your existing discounts)
+- I checked out as a guest, can I still start a return myself?
 - Will I have to pay import duties or taxes?
 - What happens if I refuse to pay duties on delivery?
 
-Do not write an answer for a field still marked as a decision. An empty question with a note is honest; an invented answer is not.
+Do not write an answer for a field still undecided. An invented answer is worse than a missing one.
+
+Check each answer against a guest buyer, a gift recipient, a shopper who wants an exchange and a shopper in each country the store ships to. A saved reply that says "just log in" is wrong for a gift recipient; "free returns on all orders" is wrong if cross-border returns are not free.
 
 ---
 
@@ -97,18 +108,24 @@ Keep it terse. It gets read under pressure.
 
 ---
 
-## 5. Open decisions
+## 5. Replacement text per place
 
-Everything still marked. For each: the question, who has to decide it, and whether it blocks publication.
-
-List every unresolved cross-check mismatch here too, with the sources that change once it is picked.
-
-Separate the blocking items from the rest. A merchant with two hours before a sale needs to know which three things actually have to be answered first.
+For each place that has to change (banner, FAQ, email template, saved reply, product page), the exact new text. The merchant pastes these in; nothing is left saying the old thing.
 
 ---
 
-## 6. What your store cannot enforce
+## 6. What Shopify does automatically and what staff do by hand
 
-Only when `platform-limits.md` found something. For each: what the merchant intends, what the platform will actually do, and what it costs to cover the difference by hand.
+Only when `platform-limits.md` applies. For each: what the merchant promises, what Shopify does on its own, the manual step that honours the rest, who does it, and the settings to change with the date to change them (for example: set a 90-day custom return window before 1 November, set it back on 25 December, decline self-serve requests after 31 January).
 
-This section is often the most valuable thing produced, and it is the one nobody asks for.
+Never say an order is unprotected when staff can honour the page by hand. Say what the hand step is.
+
+---
+
+## 7. Decisions
+
+**In the first reply, blocking decisions only**, as a numbered batch the merchant can answer in one message, each with the known options (A, B) and the places that change once picked.
+
+A decision **blocks publication** if its answer changes whether a shopper qualifies, what they pay, a date or time, eligibility, or the refund amount, method or window. The free shipping threshold measured before or after discount, and the sale start and end time with timezone, always block. So does every product-claim mismatch. Wording, tone and layout never block.
+
+**In the final reply, non-blocking decisions left**, if any, each with who decides.

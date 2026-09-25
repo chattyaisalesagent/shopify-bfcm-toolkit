@@ -1,0 +1,11 @@
+{
+  "today": "2026-12-08",
+  "stall_days": null,
+  "promise": {
+    "source": "rule",
+    "business_days": { "by_zone": { "US": 5, "CA": 8, "GB": 10, "AU": 10 } },
+    "non_working_weekdays": [5, 6],
+    "holidays": ["2026-11-26"]
+  },
+  "contacted_orders": ["#2007", "#2015", "#2099"]
+}

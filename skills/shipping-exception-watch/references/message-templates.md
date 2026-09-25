@@ -8,6 +8,8 @@ Rules for every draft:
 - **The carrier status is quoted from the file, never written from imagination.** If the file says `In transit` and a last update of 2 December, the message says exactly that. If the file has no status detail, say "the carrier's tracking has not updated since **[date]**" or leave the bracket.
 - **No new delivery date the merchant cannot back up.** "We don't have a reliable new estimate yet" is an acceptable sentence when it is true.
 - **Every offer is the merchant's decision.** Refunds, gift cards, discount codes, reshipping, paying duties: each one stays `[DECISION NEEDED: ...]` until the merchant confirms it, and an unconfirmed offer must not appear in a message that goes out under the store's name.
+- **No names from the file.** Every greeting uses `[first name]`, which the merchant's email or helpdesk tool fills in. The skill never reads names.
+- **Nothing for on-track orders.** Shopify's customer notifications already cover shipping confirmation, shipping updates, out for delivery and delivered. These drafts are only for the cases Shopify has no notification for.
 - **Drafts only.** The merchant reviews and sends them from their own email or helpdesk tool.
 
 ---
@@ -18,7 +20,7 @@ Use for every order in the group. If `days_late` is large or the order was a gif
 
 > Hi **[first name]**, we're sorry: your order **[order number]** hasn't arrived by **[promised date]**, the date we gave you.
 >
-> It left us on **[ship date]** with **[carrier]**. The latest update we have from the carrier shows **[status as written in the file]** on **[last update date]**. Track it here: **[tracking link]**.
+> It left us on **[ship date]**, **[with {carrier}, if the file has it]**. The latest update we have from the carrier shows **[status as written in the file]**, **[on last update date, if the file has one]**. Track it here: **[tracking link]**.
 >
 > **[New estimate if the merchant has one, or: "We don't have a reliable new estimate yet, and we're checking with the carrier now."]**
 >
@@ -45,7 +47,7 @@ If the order is also flagged `customs_hold`, add the customs paragraph from temp
 
 ## 2. `customs_hold`: held at customs
 
-> Hi **[first name]**, a quick update on order **[order number]**. It's currently with customs in **[destination country]**. The carrier shows: **[status or note as written in the file]**.
+> Hi **[first name]**, a quick update on order **[order number]**. It's currently with customs in **[destination country]**. The carrier shows: **[status or tracking detail as written in the file]**.
 >
 > **[Only if the merchant confirms what is needed: "To release it, customs needs {document / duty payment}. {What the shopper should do, or what the store is doing}."]**
 >
@@ -53,11 +55,28 @@ If the order is also flagged `customs_hold`, add the customs paragraph from temp
 >
 > Customs timing is outside our and the carrier's control, so we can't promise a date yet. We'll update you as soon as it's released. Track it here: **[tracking link]**.
 
-Do not tell the shopper they owe duties, or that the store will pay them, unless the merchant has confirmed which. Check the matched keywords in the output first: a note that only mentions customs in passing is not a hold.
+Do not tell the shopper they owe duties, or that the store will pay them, unless the merchant has confirmed which. Check the matched keywords in the output first: a carrier event that only mentions customs in passing is not a hold.
 
 ---
 
-## 3. `tracking_stalled`: no update for a while
+## 3. `delivery_problem`: failed, attempted or delayed delivery
+
+The order is not late yet, but the carrier reports a problem: a failed or attempted delivery, a delay, or an exception. Shopify sends no notification for these, so the shopper often sees the card through the door or the tracking page before hearing from the store.
+
+> Hi **[first name]**, a quick heads-up on order **[order number]**. **[Carrier, if the file has it]** reports: **[status as written in the file]**.
+>
+> **[If the status is a failed or attempted delivery: "It looks like the carrier couldn't complete the delivery. Their notice or the tracking link below should say how to rearrange delivery or collect the parcel."]**
+> **[If the status is delayed: "The carrier has marked it as delayed. It's still due by {promised date}, and we're watching it."]**
+>
+> Track it here: **[tracking link]**. If the parcel is sent back to us, we'll **[DECISION NEEDED: next step, e.g. reship at no cost, refund]**.
+>
+> Questions? **[how to reach a person]**.
+
+Do not invent the carrier's pickup address, how long it holds the parcel, or how many attempts it makes; that differs by carrier and is not in the file. Only say "we've contacted the carrier" if the merchant has.
+
+---
+
+## 4. `tracking_stalled`: no update for a while
 
 The order is not late yet. The goal is to reach the shopper before they notice the tracking page has not changed.
 
@@ -71,11 +90,11 @@ Only say "we've opened a trace with the carrier" if the merchant has actually do
 
 ---
 
-## 4. `delivered_but_contacted`: marked delivered, shopper says it didn't arrive
+## 5. `delivered_but_contacted`: marked delivered, shopper says it didn't arrive
 
 The shopper has already written in, so this is a reply, sent in the same thread.
 
-> Hi **[first name]**, thanks for letting us know, and sorry for the worry. **[Carrier]** marked order **[order number]** as delivered on **[last update date]**.
+> Hi **[first name]**, thanks for letting us know, and sorry for the worry. **[Carrier]** marked order **[order number]** as delivered **[on {date}, if the file has one]**.
 >
 > Could you check a few places for us: with neighbours, around the door or a side entrance, a mailbox or parcel locker, and with anyone else at the address who may have taken it in?
 >
@@ -84,6 +103,17 @@ The shopper has already written in, so this is a reply, sent in the same thread.
 Do not suggest the shopper is mistaken, and do not promise a reship or refund in the first reply unless the merchant has decided to.
 
 ---
+
+## `check_tracking`: no draft until the tracking page confirms it
+
+These orders are candidates from Shopify-only data: possibly stalled, possibly never scanned, possibly held at customs. None is confirmed, so none gets a message yet. Show the merchant each order with its `check_reasons`, tell them to open the order in Shopify admin and click the tracking number, then:
+
+- tracking says customs, clearance, duties or documents: use template 2, Held at customs;
+- tracking has not moved for several days: use template 4, Tracking stalled, with the last scan date from the tracking page;
+- tracking says failed, attempted or exception: use template 3, Delivery problem;
+- tracking shows recent scans: no message.
+
+For a `past_promised_date` or `delivery_problem` order flagged `possible_customs_hold`, the same check decides whether to add the customs paragraph or use template 2.
 
 ## `contacted_but_on_track`
 

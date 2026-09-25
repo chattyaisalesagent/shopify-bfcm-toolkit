@@ -1,0 +1,126 @@
+{
+ "_how_these_were_computed": "Independently of plan.py (scratch caseA.py from the verification): each 2026 day takes last year's day 364 days earlier (same weekday, same distance from Black Friday: 27 Nov 2026 <- 28 Nov 2025) up to 23 Dec, and the same calendar date from 24 Dec on, then x 1.10 rounded half up. Mai 8h weekdays, Lan 8h weekdays and 4h weekends, x 0.75 = 12.0 weekday, 3.0 weekend. Backlog by hand: 21 Nov 5.0 - 3.0 = 2.0; 22 Nov 5.0 + 2.0 - 3.0 = 4.0; 23 Nov 6.6 + 4.0 = 10.6 <= 12.0 so 0; 27 Nov 19.8 - 12.0 = 7.8; 28 Nov 16.5 + 7.8 - 3.0 = 21.3; 29 Nov 14.3 + 21.3 - 3.0 = 32.6; 30 Nov 18.7 + 32.6 - 12.0 = 39.3; 1 Dec 15.4 + 39.3 - 12.0 = 42.7. Bill: Nov 1112 + 1045 = 2157, 157 over -> 2 blocks x 36 + 300 = 372; Dec 3432, 1432 over -> 15 blocks = 540 + 300 = 840; Jan 1309 -> 300 (lower bound).",
+ "forecast_all": [
+  66,
+  50,
+  50,
+  66,
+  66,
+  66,
+  55,
+  198,
+  165,
+  143,
+  187,
+  154,
+  132,
+  121,
+  110,
+  77,
+  77,
+  110,
+  110,
+  110,
+  110,
+  110,
+  77,
+  77,
+  110,
+  110,
+  110,
+  110,
+  110,
+  77,
+  77,
+  132,
+  132,
+  99,
+  99,
+  44,
+  176,
+  121,
+  121,
+  143,
+  143,
+  143,
+  66,
+  132,
+  88,
+  88,
+  99,
+  99,
+  99,
+  99,
+  99,
+  66,
+  66,
+  77,
+  77,
+  77,
+  77
+ ],
+ "matched": {
+  "2026-11-27": "2025-11-28",
+  "2026-12-21": "2025-12-22",
+  "2026-12-23": "2025-12-24",
+  "2026-12-24": "2025-12-24",
+  "2026-12-26": "2025-12-26",
+  "2027-01-02": "2026-01-02"
+ },
+ "days": {
+  "2026-11-27": {
+   "required": 19.8,
+   "available": 12.0,
+   "gap": 7.8,
+   "backlog_end": 7.8
+  },
+  "2026-11-21": {
+   "backlog_end": 2.0
+  },
+  "2026-11-22": {
+   "backlog_end": 4.0
+  },
+  "2026-11-23": {
+   "backlog_end": 0.0
+  },
+  "2026-11-28": {
+   "backlog_end": 21.3
+  },
+  "2026-11-29": {
+   "backlog_end": 32.6
+  },
+  "2026-11-30": {
+   "backlog_end": 39.3
+  },
+  "2026-12-01": {
+   "backlog_end": 42.7
+  },
+  "2026-12-29": {
+   "required": 14.3,
+   "available": 12.0,
+   "gap": 2.3
+  },
+  "2026-12-30": {
+   "gap": 2.3
+  },
+  "2026-12-31": {
+   "gap": 2.3
+  }
+ },
+ "cost": {
+  "2026-11": {
+   "total_volume": 2157,
+   "estimated_bill": 372
+  },
+  "2026-12": {
+   "total_volume": 3432,
+   "estimated_bill": 840
+  },
+  "2027-01": {
+   "total_volume": 1309,
+   "estimated_bill": 300,
+   "lower_bound_only": true
+  },
+  "total_estimated_bill": 1512
+ }
+}

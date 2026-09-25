@@ -18,15 +18,15 @@ Not every field applies to every store. A store with no free shipping has no thr
 
 **3. Returnability of discounted items.** Can items bought with the code be returned? Under the normal window, a shorter one, or not at all? Cross-check against the final-sale settings; see `platform-limits.md`.
 
-**4. Free-shipping threshold.** Is there one, does it change for the sale, and is it measured **before or after** the discount? The platform answer is in `platform-limits.md` and the merchant still has to decide what to publish and whether to move the threshold.
+**4. Free-shipping threshold.** Is there one, does it change for the sale, which countries or regions it covers, and is it measured **before or after** the discount? Ask whether it is a free shipping discount or a price-based shipping rate, because they behave differently (`platform-limits.md`). The merchant still decides what to publish and whether to move the threshold.
 
 **5. Start and end.** Date, time and named timezone, for both ends. A bare date is a defect.
 
 **6. Exclusions.** Which products, collections or regions are excluded. "Some exclusions apply" names none and is unusable; treat it as absent, not as present.
 
-**7. Gift purchases.** Can a recipient exchange an item bought with the code, and what do they need in order to do it? Cross-check with the self-serve limitation in `platform-limits.md`.
+**7. Gift purchases.** Can a recipient exchange an item bought with the code, and what do they need in order to do it? Self-serve returns sign in with the buyer's email, so a recipient needs the buyer or a person (`platform-limits.md`).
 
-**8. When a code fails.** What the shopper should do, and who they contact. The checkout message explains nothing, so if the terms do not cover this the shopper's only route is to leave.
+**8. When a code fails.** What the shopper should do, and who they contact. The checkout message (quoted exactly in `platform-limits.md`) explains nothing, so if the terms do not cover this the shopper's only route is to leave.
 
 ---
 
@@ -34,11 +34,11 @@ Not every field applies to every store. A store with no free shipping has no thr
 
 **1. Which orders the holiday window covers.** Start and end, stated as purchase or delivery dates. Then check the timing consequence: on Shopify a return rule change applies only to future orders, so a rule meant to cover orders from 1 November has to exist before 1 November.
 
-**2. The return deadline.** How many days, measured from what event (delivery, purchase), or a seasonal promise with a fixed calendar end date. If it is a fixed end date, the enforceability limit in `platform-limits.md` applies and must be raised.
+**2. The return deadline.** How many days, measured from what event (delivery, purchase), or a seasonal promise with a fixed calendar end date. If it is a fixed end date, raise the approximation in `platform-limits.md`: a custom window set before the first covered order, restored after the last, with edge cases honoured by hand.
 
 **3. Gift returns and gift receipts.** Does the store issue gift receipts or gift notes? What can a recipient without a receipt do, what must they provide (order number, buyer's name or email), and what do they get back (store credit, exchange, refund to the buyer)? Is the buyer told? Most policies are silent here and it is the single most common post-holiday question.
 
-**4. Exchanges versus refunds.** Which is offered, whether the customer chooses, how a customer starts an exchange given that self-serve returns do not cover exchanges, and what happens when the exchange item is out of stock or costs a different amount.
+**4. Exchanges versus refunds.** Which is offered, whether the customer chooses, how a customer starts an exchange given that exchanges cannot be requested through self-serve returns, and what happens when the exchange item is out of stock or costs a different amount.
 
 **5. Who pays return shipping.** Free, a flat fee deducted, or the customer buys the label. Whether this differs for exchanges, faulty items, and gift recipients.
 
@@ -70,7 +70,7 @@ Only for stores that ship across borders. Every answer here is a merchant decisi
 
 **6. International order-by dates.** If the store publishes holiday cutoffs, are international zones listed separately? Cross-border transit is longer and customs adds time. The dates themselves come from `delivery-cutoff-planner`; this field only checks the policy mentions them.
 
-**Why this matters more than it used to, for US shoppers.** Since 29 August 2025 the US no longer applies the de minimis exemption that let low-value parcels enter duty-free, so a parcel of any value shipped to a US shopper can now carry duties or fees. Treat this as a reason to state clearly who pays and when, not as a statement of what any parcel will be charged. It is not legal or customs advice; the merchant should confirm current rules with their carrier or a customs broker.
+**Why this matters more than it used to, for US shoppers.** Raise this only if the store ships into the US from another country. Since 29 August 2025 the US no longer applies the de minimis exemption that let low-value parcels enter duty-free, so a parcel of any value shipped to a US shopper can now carry duties or fees. Treat this as a reason to state clearly who pays and when, not as a statement of what any parcel will be charged. It is not legal or customs advice; the merchant should confirm current rules with their carrier or a customs broker.
 
 ---
 
@@ -126,7 +126,7 @@ Run these after the individual fields. Each is a pair that reads fine separately
 - A sitewide sale plus "all sale items are final" plus any general returns promise. During a sitewide sale, every item is a sale item.
 - A free-shipping threshold plus a percentage discount, where the terms never say which price the threshold measures.
 - An extended holiday window plus final-sale collections, where neither says which wins.
-- A gift exchange promise plus a self-serve returns flow that cannot process exchanges or serve someone without an account.
+- A gift exchange promise plus a saved reply or FAQ that tells everyone to log in and click return. Exchanges cannot be requested self-serve, and a gift recipient cannot sign in to the buyer's order. Guest buyers can: they sign in with the order email and a code.
 - A stated end date plus a stated timezone that differs from the store's admin timezone.
-- "Free returns" plus international shipping, where the policy never says whether cross-border returns are included.
+- "Free returns" or "free shipping" plus shipping to more than one country, where the text never says which countries it covers. Check the claim against each country the store ships to.
 - "No hidden fees" or "the price you see is the price you pay" plus shopper-paid duties on delivery.

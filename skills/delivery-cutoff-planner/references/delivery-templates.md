@@ -1,6 +1,6 @@
 # The three delivery templates
 
-Shopify's built-in customer notifications are order confirmation, cancelled, refund, shipping confirmation, shipping update, out for delivery and delivered. **There is no delayed-delivery template.** These three fill that gap. Verified against Shopify's own documentation, checked 21 September 2026.
+For carrier shipments, Shopify's built-in customer notifications are Shipping confirmation (sent when the order is fulfilled), Shipping update (when tracking information is updated), Out for delivery and Delivered, the last two triggered by carrier tracking events. **None of them tells the shopper a parcel is late or will miss the date.** Local delivery works differently: Out for delivery and Delivered do not apply, a delivery confirmation email goes out when the merchant marks the order delivered, and Shopify has listed a "Local order missed delivery" notification for a failed local drop-off. That still does not cover a carrier parcel running late. These three templates fill that gap. Checked against help.shopify.com/en/manual/fulfillment/setup/notifications/customer-notifications and help.shopify.com/en/manual/fulfillment/fulfilling-orders/local-delivery-fulfillment on 24 September 2026.
 
 Fill every bracket from what the merchant has told you or from the script's output. Leave a bracket unfilled, marked, rather than guessing.
 

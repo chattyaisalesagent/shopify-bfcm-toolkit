@@ -49,9 +49,11 @@ Or skip connecting and use Route B.
 ```
 
 ```graphql
-# 4. Recent orders with fulfilment and tracking (read_orders; last 60 days)
-{ orders(first: 100, query: "created_at:>=<60 days ago>") { nodes {
-  name createdAt displayFulfillmentStatus requiresShipping discountCodes
+# 4. Recent orders with fulfilment and tracking (read_orders; last 60 days).
+# Filter on processed_at, the date the order was placed. Orders imported from another platform
+# carry today's createdAt, so created_at would count years of history as "recent".
+{ orders(first: 100, sortKey: PROCESSED_AT, reverse: true, query: "processed_at:>=<60 days ago>") { nodes {
+  name processedAt displayFulfillmentStatus requiresShipping discountCodes
   shippingAddress { countryCodeV2 }
   fulfillments { createdAt displayStatus estimatedDeliveryAt deliveredAt trackingInfo { number company } }
 } pageInfo { hasNextPage endCursor } } }

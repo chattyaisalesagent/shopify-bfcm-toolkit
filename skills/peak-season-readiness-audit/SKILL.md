@@ -45,8 +45,8 @@ Never claim a connection or a file you have not actually read.
 ## How to work
 
 1. **Get the data** as above, and say in one line what you found ("Connected to the store" or "Read your orders export, Nov 2025 to Sep 2026").
-2. **Pre-score from the data.** For each line, note what the data shows (see "What store data can show" in `references/store-data.md`). Do not show this yet.
-3. **Ask only what the data could not answer**, one question at a time, usually four:
+2. **Pre-score from the data.** For each line, note what the data shows (see "What store data can show" in `references/store-data.md`). Keep it to yourself: no scorecard, table, partial score or fix list until the questions below are answered. Share only a few plain findings that set up the first question.
+3. **Ask only what the data could not answer**, one question per message, then wait for the answer before the next. Usually four:
    - What broke last peak season (complaints that piled up, promises that failed, surprise bills). Show what the data already suggests, such as last season's busiest week, slowest fulfilment or refunds, and ask what it felt like from the inside. First peak season: say so.
    - How shoppers reach the store (Shopify Inbox, another chat app, a helpdesk, email), whether an AI assistant or bot replies on its own, and whether any support tool caps usage or charges per ticket, conversation or message. This decides which lines are Not applicable.
    - Who takes a conversation a bot or first-line person cannot handle, and whether they can approve refunds and address changes.

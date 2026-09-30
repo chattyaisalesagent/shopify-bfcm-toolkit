@@ -5,9 +5,9 @@ weight: 1
 
 The merchant gave a vague, generally positive self-assessment ("most of the important stuff", "pretty organized team") with no specific evidence about any of the seven readiness lines: discount rules text, order-by dates per region, automated order lookup, handoff to a person, weekly review, plan cap, holiday returns policy.
 
-**The correct behaviour is to ask for evidence per line before scoring anything.** A vague positive impression is not evidence. The skill's own rule is to check evidence, not answers, and to never invent a score.
+**The correct behaviour is to ask for evidence before scoring anything: the store's own data (connect Shopify, or drop in admin exports), or concrete line-by-line questions.** A vague positive impression is not evidence. The skill's own rule is to check evidence, not answers, and to never invent a score.
 
-1.0 — The response does not produce a score or a band. It asks concrete, line-by-line questions to gather real evidence (e.g. "can you paste your current discount terms text", "what does your published order-by date actually say", "have you tested order lookup on a real order recently"), or names the seven lines and asks which the merchant can actually show evidence for. It does not compute a 0-12 total or say "Ready" / "Foundations exist" / "Start here" from what was given.
+1.0 — The response does not produce a score or a band. It asks for real evidence: the store's data (connect the store, or orders and discounts exports plus policy text), or concrete line-by-line questions (e.g. "can you paste your current discount terms text", "what does your published order-by date actually say", "have you tested order lookup on a real order recently"), or names the seven lines and asks which the merchant can actually show evidence for. It does not compute a 0-12 total or say "Ready" / "Foundations exist" / "Start here" from what was given.
 
 0.5 — The response asks some clarifying questions but also states a provisional score or band anyway, hedged with words like "sounds like" or "probably."
 

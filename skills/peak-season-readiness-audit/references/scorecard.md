@@ -2,11 +2,11 @@
 
 Lines 1 to 6 follow the six-line scorecard in Chatty's "Before BFCM 2026" report. Two changes make it work for every store: line 3 counts Shopify's own Order status page, not only order lookup in a chat, and lines 3, 5 and 6 can be Not applicable when the store does not have the thing the line checks. Lines 5 and 6 also accept a first-season store's forecast in place of last year's numbers.
 
-Each line scores Ready (2 points), Partial (1 point) or Missing (0 points). "Not applicable: <reason>" is allowed only on lines 3, 5 and 6, only when the condition below is true from what the merchant said. "Not scored: <what is missing>" is for a line that applies but cannot be judged.
+Each line scores Ready (2 points), Partial (1 point) or Missing (0 points). "Not applicable: <reason>" is allowed only on lines 3, 5 and 6, only when the condition below is true from store data or what the merchant said. "Not scored: <what is missing>" is for a line that applies but cannot be judged.
 
 Lines 7, 8 and 9 are additions, scored the same way but kept out of the score.
 
-Before scoring, the audit asks what broke last peak season and how the store's support is set up (see the skill body).
+Before scoring, the audit reads the store's data (`store-data.md`), then asks only what the data could not answer, such as what broke last peak season and how the store's support is set up (see the skill body).
 
 ## 1. Discount rules
 
@@ -14,7 +14,7 @@ Before scoring, the audit asks what broke last peak season and how the store's s
 - **Partial (1):** Written but out of their reach, or worded differently in different places.
 - **Missing (0):** Only in the head of whoever runs the promotion.
 
-**How to check.** Ask for the sale terms text. With a connector, `graphql_query` can read how a discount is set up (whether it combines with product, order or shipping discounts, minimum, dates), but a code existing is not the same as the terms being written; the text is what this line scores. If the terms appear in several places and disagree, the line is at most Partial.
+**How to check.** From store data first (`store-data.md`): each live discount's settings and the sale text on the store's pages and policies. Without a connection, the discounts export and pasted sale text. With a connector, `graphql_query` can read how a discount is set up (whether it combines with product, order or shipping discounts, minimum, dates), but a code existing is not the same as the terms being written; the text is what this line scores. If the terms appear in several places and disagree, the line is at most Partial.
 
 ## 2. Order-by dates per region
 
@@ -22,7 +22,7 @@ Before scoring, the audit asks what broke last peak season and how the store's s
 - **Partial (1):** One general date, or dates for only some of the regions the store sells to.
 - **Missing (0):** Not published.
 
-**How to check.** Ask for the published cutoff text, or find it on the site.
+**How to check.** Regions come from the store (countries shipped to, orders by country). Look for a published cutoff in the store's pages and shipping policy; ask only if none was read.
 
 ## 3. Self-serve order status
 
@@ -33,7 +33,7 @@ Shopify gives every store an Order status page. Order confirmation emails can li
 - **Missing (0):** No tracking; every "where is my order" needs a person.
 - **Not applicable:** The store ships nothing (digital products or services only).
 
-**How to check.** Ask whether every order gets a tracking number at fulfilment, whether anyone has opened the shipping email link on a real order this season, and whether any chat on the store has order lookup switched on and tested. With a connector, `get-order` shows fulfilment and tracking on a real order; it does not prove the shopper-facing path was tested, so ask separately. This is set up in Shopify and the chat app, not in a kit tool.
+**How to check.** Connected: count how many recent fulfilled orders carry a tracking number, and whether any order requires shipping at all. Exports cannot show tracking, so without a connection ask whether every order gets a tracking number at fulfilment. Then ask whether anyone has opened the shipping email link on a real order this season, and whether any chat on the store has order lookup switched on and tested. With a connector, `get-order` shows fulfilment and tracking on a real order; it does not prove the shopper-facing path was tested, so ask separately. This is set up in Shopify and the chat app, not in a kit tool.
 
 ## 4. Handoff to a person
 
@@ -59,7 +59,7 @@ Shopify gives every store an Order status page. Order confirmation emails can li
 - **Missing (0):** The overage price, or what happens at the cap, is not known.
 - **Not applicable:** No support tool the store uses has a usage cap or a usage charge: for example Shopify Inbox (listed as free on the Shopify App Store, apps.shopify.com/inbox, checked 24 September 2026) or a plain email inbox. If any tool charges per ticket, conversation, message or resolution, or stops at a limit, the line applies.
 
-**How to check.** Ask what each support tool charges and whether it has a limit. No API exposes this across vendors.
+**How to check.** Ask what each support tool charges and whether it has a limit. No API exposes this across vendors. The volume to compare it with comes from store data: last season's orders per day (connected analytics or `orders_summary.py`).
 
 ---
 
@@ -69,7 +69,7 @@ Shopify gives every store an Order status page. Order confirmation emails can li
 - **Partial (1):** Some decided, or decided but not published where shoppers and staff can see it.
 - **Missing (0):** None decided.
 
-**How to check.** Ask for the returns policy text and whether it says anything about the holiday period.
+**How to check.** Read the refund policy from the store (or pasted text) and check the three items; ask only what it leaves unclear.
 
 ## 8. Proactive late-delivery notices (reported separately)
 
@@ -79,7 +79,7 @@ Shopify's shipping notifications are shipping confirmation, shipping update, out
 - **Partial (1):** Only one of those two halves.
 - **Missing (0):** Late orders are found when the shopper complains.
 
-**How to check.** Ask for the message text, and who checks shipped orders for delays, how often, using what.
+**How to check.** Store data shows the size of the problem: connected, fulfilled orders past their estimated delivery with no delivery; exports, days to fulfil and orders stuck unfulfilled. Then ask for the message text, and who checks shipped orders for delays, how often, using what.
 
 ## 9. Contingency plan (reported separately)
 

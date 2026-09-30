@@ -8,7 +8,7 @@ Each skill also ships as a copy-paste prompt in [`prompts/`](prompts/) for any A
 
 | # | Skill | When | What you get |
 |---|---|---|---|
-| 1 | `peak-season-readiness-audit` | October | A score per readiness line, the three fixes to make first, and which skill handles each |
+| 1 | `peak-season-readiness-audit` | October | Reads your store (connected, or from admin exports), scores each readiness line, and gives the three fixes to make first and which skill handles each |
 | 2 | `campaign-rules-policy-qa` | Every sale | Sale terms and holiday returns policy checked for gaps, and every place the same term reads differently |
 | 3 | `delivery-cutoff-planner` | Early November | Per-zone "order by" dates (script), and on-track / late / won't-make-it messages |
 | 4 | `peak-load-cover-planner` | Late October | Daily volume forecast to mid-January, a named roster, and the helpdesk bill if the cap is exceeded (script) |
@@ -69,6 +69,14 @@ Packaged to the same spec Codex reads (root `plugin.json`, `.agents/plugins/mark
 ### Any other agent that reads SKILL.md directly
 
 Point it at `skills/campaign-rules-policy-qa/` or `skills/delivery-cutoff-planner/` — each is a self-contained, spec-compliant skill folder that doesn't depend on the plugin wrapper at all.
+
+**Let the readiness audit read your store.** It works best on your own data. In Claude Code, either authorise the Shopify CLI for your store once (read-only scopes, listed in [`store-data.md`](skills/peak-season-readiness-audit/references/store-data.md)):
+
+```bash
+shopify store auth --store your-store.myshopify.com --scopes read_legal_policies,read_discounts,read_orders,read_all_orders,read_content,read_shipping,read_reports
+```
+
+or drop your Shopify admin exports (orders CSV, discounts CSV, policy text) in the folder you run Claude Code from. In the Claude app, connect the Shopify connector for Claude, or upload the same exports.
 
 Then just describe what you need — "check this sale terms draft before we publish it", "when's the last day to order for Christmas delivery to the EU" — and the relevant skill fires on its own.
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Package the BFCM Support Kit for chatty.net/bfcm-2026/kit.
+# Package the BFCM Support Kit for chatty.net/bfcm/kit.
 #
 #   0. Checks every prompt fits in one chat message (check-prompt-length.py).
 #   1. Copies prompts/<slug>.md into the site, where the kit page reads
@@ -14,7 +14,7 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 SITE="${1:-/Users/avada/chatty.net}"
-PROMPT_OUT="$SITE/src/app/(main)/bfcm-2026/kit/prompts"
+PROMPT_OUT="$SITE/src/app/(main)/bfcm/kit/prompts"
 ZIP_OUT="$SITE/public/downloads/bfcm-support-kit"
 
 # Public kit, in the order the kit page shows them. conversation-gap-analyzer
@@ -50,7 +50,7 @@ for slug in "${SLUGS[@]}"; do
 done
 
 cat > "$STAGE/HOW-TO.txt" <<'EOF'
-The BFCM Support Kit, by Chatty (chatty.net/bfcm-2026)
+The BFCM Support Kit, by Chatty (chatty.net/bfcm)
 
 Six folders, one skill each. Every skill drafts; nothing changes your
 store or messages a customer until you do.

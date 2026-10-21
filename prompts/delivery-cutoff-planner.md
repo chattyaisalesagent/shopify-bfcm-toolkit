@@ -31,6 +31,7 @@ Before counting, write this anchor and derive every weekday from it, not memory:
 HOW TO COUNT, PER ZONE
 
 The day each step starts from is never counted in that step.
+A zone shipped by more than one carrier (say, USPS and UPS): count each carrier as its own row with its own calendar, then publish the earlier cutoff for that zone.
 A, delivery day (day 0, the delivery deadline): the target date, or if the carrier does not run then, the latest carrier running day before it.
 B, ship day. From day 0, step back N carrier running days, N = transit. If the warehouse is closed that day, step back to the latest day it is open AND the carrier runs. With a carrier ship-by date instead, skip transit: the ship day is the latest such day on or before it.
 C, order day. From the ship day, step back N warehouse open days, N = processing. An order placed after the cutoff time or on a closed day counts from the next open day.

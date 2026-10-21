@@ -7,15 +7,15 @@ HARD RULES
 1. Never invent a score. Each line is Ready (2 points), Partial (1) or Missing (0), only from what I show or tell you. Cannot judge a line: "Not scored: <what is missing>". Never guess Partial.
 2. "Not applicable: <reason>" only on lines 3, 5 and 6, when its condition below is true from what I told you. Left out of the score, never critical.
 3. Label every line's evidence: "Store data" (read from my connected store or my exports), "Pasted" (text I pasted) or "My answer" (what I told you, the weakest).
-6. Read only. Never change anything in my store, even if the connection allows it. Never show shopper names, emails or addresses.
 4. Do not write policies or compute dates.
 5. Do not recommend, compare or praise any software, this audit's maker included. Plain language, no marketing words.
+6. Read only. Never change anything in my store, even if the connection allows it. Never show shopper names, emails or addresses.
 
 STEP 0. MY STORE DATA
 
 If this chat has a Shopify connection (connector or plugin), read my policies, store pages, live discounts, countries I ship to, recent orders with tracking, and orders per day last Nov 15 to Jan 15. Never claim a connection you lack.
-If not, ask me to connect Shopify or upload: orders export (Orders, Export, from last Nov 1, CSV), discounts export, and my returns and shipping policy text. From the orders CSV compute orders per day and busiest 7 days last Nov 15 to Jan 15, days to fulfil, orders by country, codes used. It has no tracking data; say so.
-Tell me in one line what you read.
+If not, ask me to connect Shopify or upload: orders export (Orders, Export, from last Nov 1, CSV), discounts export, and my returns and shipping policy text. From the orders CSV (a row per product; count orders by Name) compute orders per day and busiest 7 days last Nov 15 to Jan 15, days to fulfil, orders by country, codes used. It has no tracking data; say so.
+Say in one line what you read.
 
 STEP 1. WHAT THE DATA CANNOT SHOW
 
@@ -25,7 +25,7 @@ Ask only what is still unknown, usually:
 - Who takes conversations that need a person, and whether they can approve refunds and address changes.
 - Whether I have late-delivery messages and a contingency plan; if so, ask me to paste them.
 
-STEP 3. SCORE NINE LINES
+STEP 2. SCORE NINE LINES
 
 | # | Line | Ready | Partial | Missing |
 |---|---|---|---|---|
@@ -44,16 +44,16 @@ Not applicable only when (from store data or my answer):
 5: no AI assistant or bot replies to shoppers on its own (fixed FAQ buttons do not count).
 6: no tool I use caps or charges for usage (such as Shopify Inbox, free, or plain email).
 
-STEP 4. SCORE AND BAND
+STEP 3. SCORE AND BAND
 
 Score = points from applicable lines 1 to 6, out of 2 x their number (12 if all six apply), as "x out of y (z%)".
-83% or more (10 to 12 of 12): Ready. Keep it that way.
+83% or more (10 to 12 of 12): Ready.
 50% to 82% (6 to 9 of 12): Foundations exist, untested under load.
 Below 50%: Start here.
-Under it, say the bands are Chatty's own rubric (BFCM 2026 report), not an industry benchmark.
+Under it, say the bands are Chatty's rubric (BFCM 2026 report), not an industry benchmark.
 If an applicable line 1 to 6 is Not scored: "x out of y from the lines scored, n not scored", no band.
 
-STEP 5. FIRST STEP PER LINE NOT READY
+STEP 4. FIRST STEP PER LINE NOT READY
 
 A first step I can do in under 30 minutes, then the kit tool if any. Lines 3, 4 and 5 are set up in Shopify or my chat or helpdesk app, not a kit tool; say so.
 1: Admin, Discounts: note each sale code's combinations, minimum, dates; one paragraph in FAQ and saved replies. Then Sale Terms and Returns Policy QA.
@@ -84,6 +84,6 @@ Points: "none" if Not applicable, "separate" for 7 to 9.
 
 **Not applicable:** each with its reason.
 
-**What you read:** the connection or files, with dates covered.
+**What you read:** the connection or files, with dates.
 
-**Evidence note:** which lines rest on store data and which on my word.
+**Evidence note:** which lines rest on store data, which on my word.
